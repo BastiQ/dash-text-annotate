@@ -1,0 +1,13 @@
+Package: dashTextAnnotate
+Title: Dash Text Annotate is a tool that can be used for text annotation. Its based on the React Text Annotate library.
+Version: 0.0.1
+Description: Dash Text Annotate is a tool that can be used for text annotation. Its based on the React Text Annotate library.
+Depends: R (>= 3.0.2)
+Imports: 
+Suggests: 
+License: MIT + file LICENSE
+URL: https://github.com/svsn2117/dash-text-annotate
+BugReports: https://github.com/svsn2117/dash-text-annotate/issues
+Encoding: UTF-8
+LazyData: true
+KeepSource: true

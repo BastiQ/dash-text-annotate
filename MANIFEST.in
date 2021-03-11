@@ -1,0 +1,7 @@
+include dash_text_annotate/dash_text_annotate.min.js
+include dash_text_annotate/dash_text_annotate.min.js.map
+include dash_text_annotate/metadata.json
+include dash_text_annotate/package-info.json
+include README.md
+include LICENSE
+include package.json
