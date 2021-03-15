@@ -1,7 +1,56 @@
 {
   "src/lib/components/DashTextAnnotate.react.js": {
-    "description": "ExampleComponent is an example component.\r\nIt takes a property, `label`, and\r\ndisplays it.\r\nIt renders an input with the property `value`\r\nwhich is editable by the user.",
+    "description": "Learnings:\r\nDon't try to print (<p>..) lists or dictionaries directly",
     "displayName": "DashTextAnnotate",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The ID used to identify this component in Dash callbacks."
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\r\nto Dash, to make them available for callbacks."
+      },
+      "text": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": "The text that should be annotated"
+      },
+      "entities": {
+        "type": {
+          "name": "array"
+        },
+        "required": false,
+        "description": "The entities that are currently available"
+      },
+      "tag": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": "The currently selected tag (e.g. DATE) with which the selections will be tagged. This must be managed by the Dash App."
+      },
+      "tag_color": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The currently selected tag color (e.g. GREEN) with which the selected tag will be colored. This must be managed by the Dash App."
+      }
+    }
+  },
+  "src/lib/components/ExampleComponent.react.js": {
+    "description": "ExampleComponent is an example component.\r\nIt takes a property, `label`, and\r\ndisplays it.\r\nIt renders an input with the property `value`\r\nwhich is editable by the user.",
+    "displayName": "ExampleComponent",
     "methods": [],
     "props": {
       "id": {

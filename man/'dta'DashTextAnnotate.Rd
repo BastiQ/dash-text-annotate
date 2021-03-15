@@ -6,19 +6,23 @@
 \title{DashTextAnnotate component}
 
 \description{
-ExampleComponent is an example component. It takes a property, `label`, and displays it. It renders an input with the property `value` which is editable by the user.
+Learnings: Don't try to print (<p>..) lists or dictionaries directly
 }
 
 \usage{
-'dta'DashTextAnnotate(id=NULL, label=NULL, value=NULL)
+'dta'DashTextAnnotate(id=NULL, text=NULL, entities=NULL, tag=NULL, tag_color=NULL)
 }
 
 \arguments{
 \item{id}{Character. The ID used to identify this component in Dash callbacks.}
 
-\item{label}{Character. A label that will be printed when this component is rendered.}
+\item{text}{Character. The text that should be annotated}
 
-\item{value}{Character. The value displayed in the input.}
+\item{entities}{Unnamed list. The entities that are currently available}
+
+\item{tag}{Character. The currently selected tag (e.g. DATE) with which the selections will be tagged. This must be managed by the Dash App.}
+
+\item{tag_color}{Character. The currently selected tag color (e.g. GREEN) with which the selected tag will be colored. This must be managed by the Dash App.}
 }
 
 \value{named list of JSON elements corresponding to React.js properties and their values}

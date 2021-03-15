@@ -24,7 +24,8 @@
   "author": "Sebastian Nichtern <sebastian.nichtern@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "react-text-annotate": "^0.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",

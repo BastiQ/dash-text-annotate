@@ -8,7 +8,14 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            value: ''
+            text: 'Test Text from React', // Text that should get annotated
+            entities: [{
+                "start": 5,
+                "end": 9,
+                "tag": "DATE"
+              }], // Currently selected entities
+            tag: 'DATE', // Currently selected tag (Managed by Dash)
+            tag_color: 'GREEN', // Currently selected tag color (Managed by Dash)
         };
         this.setProps = this.setProps.bind(this);
     }
@@ -18,6 +25,7 @@ class App extends Component {
     }
 
     render() {
+        // console.log(this.state.entities)
         return (
             <div>
                 <DashTextAnnotate

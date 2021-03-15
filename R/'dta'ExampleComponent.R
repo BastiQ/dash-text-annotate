@@ -1,16 +1,16 @@
 # AUTO GENERATED FILE - DO NOT EDIT
 
-'dta'DashTextAnnotate <- function(id=NULL, text=NULL, entities=NULL, tag=NULL, tag_color=NULL) {
+'dta'ExampleComponent <- function(id=NULL, label=NULL, value=NULL) {
     
-    props <- list(id=id, text=text, entities=entities, tag=tag, tag_color=tag_color)
+    props <- list(id=id, label=label, value=value)
     if (length(props) > 0) {
         props <- props[!vapply(props, is.null, logical(1))]
     }
     component <- list(
         props = props,
-        type = 'DashTextAnnotate',
+        type = 'ExampleComponent',
         namespace = 'dash_text_annotate',
-        propNames = c('id', 'text', 'entities', 'tag', 'tag_color'),
+        propNames = c('id', 'label', 'value'),
         package = 'dashTextAnnotate'
         )
 
