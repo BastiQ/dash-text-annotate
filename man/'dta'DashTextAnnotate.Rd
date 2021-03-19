@@ -6,11 +6,11 @@
 \title{DashTextAnnotate component}
 
 \description{
-Learnings: Don't try to print (<p>..) lists or dictionaries directly
+Learnings: Don't try to print (<p>..</p>) lists or dictionaries directly
 }
 
 \usage{
-'dta'DashTextAnnotate(id=NULL, text=NULL, entities=NULL, tag=NULL, tag_color=NULL)
+'dta'DashTextAnnotate(id=NULL, text=NULL, entities=NULL, tag=NULL, tag_colors=NULL)
 }
 
 \arguments{
@@ -22,7 +22,7 @@ Learnings: Don't try to print (<p>..) lists or dictionaries directly
 
 \item{tag}{Character. The currently selected tag (e.g. DATE) with which the selections will be tagged. This must be managed by the Dash App.}
 
-\item{tag_color}{Character. The currently selected tag color (e.g. GREEN) with which the selected tag will be colored. This must be managed by the Dash App.}
+\item{tag_colors}{Named list. The currently selected tag color (e.g. GREEN) with which the selected tag will be colored. This must be managed by the Dash App.}
 }
 
 \value{named list of JSON elements corresponding to React.js properties and their values}

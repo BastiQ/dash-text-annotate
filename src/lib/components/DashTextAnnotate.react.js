@@ -4,7 +4,7 @@ import {TextAnnotator} from 'react-text-annotate'
 
 /**
  * Learnings:
- * Don't try to print (<p>..) lists or dictionaries directly
+ * Don't try to print (<p>..</p>) lists or dictionaries directly
  */
 export default class DashTextAnnotate extends Component {
 
@@ -16,21 +16,25 @@ export default class DashTextAnnotate extends Component {
     }*/
 
     render() { 
-        const {id, setProps, text, entities, tag, tag_color} = this.props;
-        console.log(entities)
-        console.log(tag)
+        const {id, setProps, text, entities, tag, tag_colors} = this.props;
+        //console.log(entities)
+        //console.log(tag)
+        //console.log(tag_colors[tag])
 
         return (
             <div id={id}>
-                <h2> Annotator Experiments: </h2>
                 <TextAnnotator
                     style={{
-                        maxWidth: 500,
                         lineHeight: 1.5,
                     }}
                     content={text}
-                    value={text}
                     value={entities}
+                    onChange={value => setProps({entities: value})}
+                    getSpan={span => ({
+                        ...span,
+                        tag: tag,
+                        color: tag_colors[tag],
+                    })}
                 />
             </div>
         );
@@ -39,6 +43,7 @@ export default class DashTextAnnotate extends Component {
 
 DashTextAnnotate.defaultProps = {};
 
+// Possible PropTypes: https://reactjs.org/docs/typechecking-with-proptypes.html
 DashTextAnnotate.propTypes = {
     /**
      * The ID used to identify this component in Dash callbacks.
@@ -69,5 +74,5 @@ DashTextAnnotate.propTypes = {
     /**
      * The currently selected tag color (e.g. GREEN) with which the selected tag will be colored. This must be managed by the Dash App.
      */
-    tag_color: PropTypes.string,
+    tag_colors: PropTypes.object.isRequired,
 };

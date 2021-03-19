@@ -9,13 +9,9 @@ class App extends Component {
         super();
         this.state = {
             text: 'Test Text from React', // Text that should get annotated
-            entities: [{
-                "start": 5,
-                "end": 9,
-                "tag": "DATE"
-              }], // Currently selected entities
+            entities: [{"start": 5, "end": 9, "tag": "DATE"}], // Currently selected entities
             tag: 'DATE', // Currently selected tag (Managed by Dash)
-            tag_color: 'GREEN', // Currently selected tag color (Managed by Dash)
+            tag_colors: {'DATE': '#379683', 'HEADER': '#EFE1BA'}, // Tags with linked colors (Managed by Dash)
         };
         this.setProps = this.setProps.bind(this);
     }

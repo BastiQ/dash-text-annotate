@@ -1,6 +1,6 @@
 {
   "src/lib/components/DashTextAnnotate.react.js": {
-    "description": "Learnings:\r\nDon't try to print (<p>..) lists or dictionaries directly",
+    "description": "Learnings:\r\nDon't try to print (<p>..</p>) lists or dictionaries directly",
     "displayName": "DashTextAnnotate",
     "methods": [],
     "props": {
@@ -39,11 +39,11 @@
         "required": true,
         "description": "The currently selected tag (e.g. DATE) with which the selections will be tagged. This must be managed by the Dash App."
       },
-      "tag_color": {
+      "tag_colors": {
         "type": {
-          "name": "string"
+          "name": "object"
         },
-        "required": false,
+        "required": true,
         "description": "The currently selected tag color (e.g. GREEN) with which the selected tag will be colored. This must be managed by the Dash App."
       }
     }
