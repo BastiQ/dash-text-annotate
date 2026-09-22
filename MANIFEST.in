@@ -1,7 +1,10 @@
-include dash_text_annotate/dash_text_annotate.min.js
-include dash_text_annotate/dash_text_annotate.min.js.map
-include dash_text_annotate/metadata.json
-include dash_text_annotate/package-info.json
-include README.md
-include LICENSE
-include package.json
+include README.md CHANGELOG.md CONTRIBUTING.md LICENSE THIRD_PARTY_NOTICES.md
+include package.json package-lock.json
+recursive-include dash_text_annotate *.py *.min.js *.css *.json py.typed *.md
+recursive-include src *.js *.mjs *.css
+recursive-include scripts *.mjs *.py
+recursive-include tests *.py *.mjs
+prune node_modules
+prune venv
+prune .venv
+global-exclude *wps-hmr* output.js *.pyc
