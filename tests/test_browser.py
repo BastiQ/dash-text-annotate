@@ -39,8 +39,13 @@ def drag_text(driver, start, end):
     doc = element(driver, '#annotator .dta-document')
     # Measure the actual text node; do not depend on fonts or screen coordinates.
     rects = driver.execute_script('''
-      const el=arguments[0], node=el.querySelector('.dta-source').firstChild;
-      const points=[arguments[1],arguments[2]].map(offset=>{
+      const el=arguments[0];
+      const points=[arguments[1],arguments[2]].map((offset,index)=>{
+        const walker=document.createTreeWalker(el.querySelector('.dta-source'),NodeFilter.SHOW_TEXT);
+        let node=walker.nextNode();
+        while(node && (offset>node.length || (offset===node.length && index===0))) {
+          offset-=node.length; node=walker.nextNode();
+        }
         const range=document.createRange(); range.setStart(node,offset); range.setEnd(node,offset);
         const r=range.getBoundingClientRect(); return {x:r.x,y:r.y+r.height/2};
       }); const r=el.getBoundingClientRect();
@@ -182,13 +187,14 @@ def test_optional_labels_preserve_selection_data_and_history(browser):
 def test_overlapping_labels_wrap_resize_and_document_cleanup(browser):
     element(browser, '#crowded').click()
     wait(browser, lambda _: len(browser.find_elements('css selector', '#annotator .dta-label-button')) == 3)
-    for width in [540, 1000]:
+    for width, position in [(540, 'right'), (540, 'left'), (540, 'top'), (540, 'bottom'), (1000, 'right')]:
         browser.set_window_size(width, 1100)
+        element(browser, f'#position-{position}').click()
         def labels_fit(_):
             return browser.execute_script('''
                 const doc=document.querySelector('#annotator .dta-document').getBoundingClientRect();
                 const labels=[...document.querySelectorAll('#annotator .dta-label-button')].map(el=>el.getBoundingClientRect());
-                return labels.length===3 && labels.every((a,i)=>a.left>=doc.left && a.right<=doc.right && a.top>=doc.top &&
+                return labels.length===3 && labels.every((a,i)=>a.left>=doc.left && a.right<=doc.right && a.top>=doc.top && a.bottom<=doc.bottom &&
                   labels.every((b,j)=>i===j || a.right<=b.left || b.right<=a.left || a.bottom<=b.top || b.bottom<=a.top));
             ''')
         wait(browser, labels_fit)
@@ -203,3 +209,38 @@ def test_overlapping_labels_wrap_resize_and_document_cleanup(browser):
     wait(browser, lambda _: not browser.find_elements('css selector', '#annotator .dta-label-button'))
     assert len(browser.find_elements('css selector', '#annotator .dta-labels')) == 1
     assert len(browser.find_elements('css selector', '#annotator .dta-highlights')) == 1
+
+
+def test_label_positions_preserve_source_selection_and_history(browser):
+    add_passage(browser, 'Acme')
+    wait(browser, lambda _: len(entities(browser)) == 1)
+    original = entities(browser)
+    wait(browser, lambda _: len(browser.find_elements('css selector', '#annotator .dta-label-button')) == 1)
+    element(browser, '#annotator .dta-label-button').click()
+    wait(browser, lambda _: element(browser, '#selected-output').text == original[0]['id'])
+    # Check the default right position before explicitly setting it again.
+    for index, position in enumerate(['right', 'left', 'top', 'bottom', 'right']):
+        if index:
+            element(browser, f'#position-{position}').click()
+        def positioned(_):
+            return browser.execute_script('''
+                const label=document.querySelector('#annotator .dta-label-button').getBoundingClientRect();
+                const highlight=document.querySelector('#annotator .dta-highlight').getBoundingClientRect();
+                const side=arguments[0];
+                if(side==='left') return label.right<=highlight.left && label.top<highlight.bottom && label.bottom>highlight.top;
+                if(side==='right') return label.left>=highlight.right && label.top<highlight.bottom && label.bottom>highlight.top;
+                if(side==='top') return label.bottom<=highlight.top;
+                return label.top>=highlight.bottom;
+            ''', position)
+        wait(browser, positioned)
+        assert entities(browser) == original
+        assert element(browser, '#annotator .dta-document').get_attribute('textContent') == TEXT
+        assert element(browser, '#selected-output').text == original[0]['id']
+        assert button(browser, 'Undo').is_enabled()
+    # Creating a span across a reserved slot must still select only source text.
+    drag_text(browser, 3, 13)
+    wait(browser, lambda _: len(entities(browser)) == 2)
+    assert entities(browser)[1]['text'] == 'Acme works'
+    assert (entities(browser)[1]['start'], entities(browser)[1]['end']) == (2, 12)
+    button(browser, 'Undo').click()
+    wait(browser, lambda _: entities(browser) == original)

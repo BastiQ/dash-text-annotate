@@ -19,6 +19,8 @@ def make_app():
             ('echo', 'Echo reordered fields'),
             ('new-reordered', 'New document with reordered old spans'),
             ('labels', 'Toggle passage labels'), ('crowded', 'Load crowded labels'),
+            ('position-left', 'Labels left'), ('position-right', 'Labels right'),
+            ('position-top', 'Labels top'), ('position-bottom', 'Labels bottom'),
         ]]),
         DashTextAnnotate(id='annotator', text=TEXT, tag='ORG'),
         html.Pre(id='output'), html.Pre(id='error-output'), html.Pre(id='selected-output'),
@@ -75,6 +77,12 @@ def make_app():
     @app.callback(Output('annotator', 'show_labels'), Input('labels', 'n_clicks'), State('annotator', 'show_labels'), prevent_initial_call=True)
     def labels(_, value):
         return value is False
+
+    @app.callback(Output('annotator', 'label_position'),
+                  [Input(f'position-{position}', 'n_clicks') for position in ['left', 'right', 'top', 'bottom']],
+                  prevent_initial_call=True)
+    def position(*_):
+        return ctx.triggered_id.removeprefix('position-')
 
     @app.callback(Output('secondary-container', 'children'), Input('unmount', 'n_clicks'), prevent_initial_call=True)
     def unmount(_):

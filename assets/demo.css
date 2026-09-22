@@ -8,6 +8,8 @@ body { margin: 0; background: #f8f8f3; color: #253832; font-family: -apple-syste
 .demo-controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 24px; align-items: end; margin: 26px 0 14px; }
 .demo-controls label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
 .demo-options label { display: flex; align-items: center; gap: .4rem; font-weight: 400; white-space: nowrap; }
+.demo-position { display: flex; align-items: center; gap: 12px; font-size: 14px; margin: 16px 0; }
+.demo-position #label-position { width: 150px; }
 .demo .hint { color: #4b6258; font-size: 14px; }
 .demo .dta-document { background: #fffffa; padding: 24px; font-size: 18px; margin-top: 16px; }
 .demo .save-controls { display: flex; flex-wrap: wrap; gap: 10px; border-top: 1px solid #ccd4cd; padding-top: 22px; margin-top: 22px; }

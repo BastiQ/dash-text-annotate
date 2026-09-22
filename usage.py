@@ -72,6 +72,10 @@ def create_app():
                     dcc.Checklist(id='inline-labels', options=[{'label': ' Show passage labels', 'value': 'yes'}], value=['yes']),
                 ], className='demo-options'),
             ], className='demo-controls'),
+            html.Div([html.Label('Label position', htmlFor='label-position'), dcc.Dropdown(
+                id='label-position', options=[{'label': value.title(), 'value': value} for value in ['right', 'left', 'top', 'bottom']],
+                value='right', clearable=False, searchable=False,
+            )], className='demo-position'),
             html.P('Save before switching documents. Saved annotations stay in this browser session.', className='hint'),
             DashTextAnnotate(id='annotator', text='', entities=[], document_id='initial', tag='ORG', tag_colors=COLORS),
             html.Div([
@@ -125,6 +129,10 @@ def create_app():
     @app.callback(Output('annotator', 'show_labels'), Input('inline-labels', 'value'))
     def show_labels(value):
         return bool(value)
+
+    @app.callback(Output('annotator', 'label_position'), Input('label-position', 'value'))
+    def label_position(value):
+        return value
 
     @app.callback(Output('output', 'children'), Input('annotator', 'entities'))
     def output(entities):

@@ -1,11 +1,13 @@
 import {createRenderer, computeStyle} from '@recogito/text-annotator';
-import {layoutLabels} from './label-layout.mjs';
+import {layoutLabels, inlineLabelSlots, sourceParts} from './label-layout.mjs';
 
 // This is the only renderer integration boundary. Import from the public package
 // entry point; do not query or patch Recogito's generated DOM or private modules.
-export function labelRenderer({getOptions, onSelect}) {
+export function labelRenderer({getOptions, onSelect, onSourceChange}) {
   return (container, state, viewport) => {
     const frame = container.parentElement;
+    const source = container.querySelector('.dta-source');
+    const text = source.textContent;
     const highlightsLayer = document.createElement('div');
     highlightsLayer.className = 'dta-highlights';
     highlightsLayer.setAttribute('aria-hidden', 'true');
@@ -20,6 +22,8 @@ export function labelRenderer({getOptions, onSelect}) {
     let visible = true;
     let space = 0;
     let lastHighlights = '';
+    let lastSlots = '[]';
+    const slots = new Map();
     let renderer;
     const px = value => `${Math.round(value * 100) / 100}px`;
 
@@ -32,7 +36,8 @@ export function labelRenderer({getOptions, onSelect}) {
     function redraw(highlights, _bounds, currentStyle, overrides) {
       if (destroyed) return; // The upstream helper can have a queued animation frame.
       if (!visible) return;
-      const {showLabels} = getOptions();
+      const {showLabels, labelPosition} = getOptions();
+      const inline = labelPosition === 'left' || labelPosition === 'right';
       const focused = document.activeElement;
       if (labelsLayer.hidden === showLabels) labelsLayer.hidden = !showLabels;
       const docBounds = container.getBoundingClientRect();
@@ -51,7 +56,8 @@ export function labelRenderer({getOptions, onSelect}) {
       // Layout all annotations, including offscreen ones. Scrolling must not change
       // reserved line spacing or shift the document under the user's pointer.
       if (showLabels) for (const annotation of state.store.all()) {
-        const rect = state.store.getAnnotationRects(annotation.id)[0];
+        const rects = state.store.getAnnotationRects(annotation.id);
+        const rect = labelPosition === 'bottom' ? rects.at(-1) : rects[0];
         const tag = annotation.bodies.find(body => body.purpose === 'tagging')?.value;
         if (!rect || !tag) continue;
         liveIds.add(annotation.id);
@@ -76,9 +82,10 @@ export function labelRenderer({getOptions, onSelect}) {
         const highlight = {annotation, rects: [rect], state: {selected: selected.has(annotation.id), hovered: false}};
         const appearance = computeStyle(highlight, overrides?.get(annotation.id) || currentStyle);
         style(badge, '--dta-label-color', appearance.fill || '#b9d7ce');
-        style(badge, 'max-width', px(Math.max(0, right - left)));
+        style(badge, 'max-width', px(Math.max(0, right - left - (inline ? 8 : 0))));
         const badgeBounds = badge.getBoundingClientRect();
         items.push({id: annotation.id, x: rect.x, y: rect.y, height: rect.height,
+          start: annotation.target.selector[0].start, end: annotation.target.selector.at(-1).end,
           badgeWidth: Math.ceil(badgeBounds.width), badgeHeight: Math.ceil(badgeBounds.height)});
       }
       for (const [id, badge] of badges) if (!liveIds.has(id)) {
@@ -87,19 +94,47 @@ export function labelRenderer({getOptions, onSelect}) {
         badge.remove();
         badges.delete(id);
       }
-      const layout = layoutLabels(items, left, right);
-      const nextSpace = showLabels ? layout.space : 0;
-      if (space !== nextSpace) {
+      const nextSlots = inlineLabelSlots(showLabels ? items : [], labelPosition, Math.max(0, right - left));
+      const signatureSlots = JSON.stringify(nextSlots);
+      if (signatureSlots !== lastSlots) {
+        lastSlots = signatureSlots;
+        slots.clear();
+        const fragment = document.createDocumentFragment();
+        for (const part of sourceParts(text, nextSlots)) {
+          if (typeof part === 'string') fragment.appendChild(document.createTextNode(part));
+          else {
+            const slot = document.createElement('span');
+            slot.className = 'dta-label-gap';
+            slot.setAttribute('aria-hidden', 'true');
+            slot.style.width = px(part.width);
+            fragment.appendChild(slot);
+            slots.set(part.id, slot);
+          }
+        }
+        source.replaceChildren(fragment);
+        // Recreate DOM ranges through the public annotation API after splitting
+        // text nodes. Local entity values and undo history do not change.
+        onSourceChange();
+        renderer.redraw(true);
+        return;
+      }
+      const layout = layoutLabels(items, left, right, labelPosition);
+      const nextSpace = showLabels && !inline ? layout.space : 0;
+      const shift = labelPosition === 'bottom' ? -nextSpace / 2 : nextSpace / 2;
+      const nextShift = `${shift}px`;
+      if (space !== nextSpace || container.style.getPropertyValue('--dta-label-shift') !== nextShift) {
         space = nextSpace;
         style(container, '--dta-label-space', `${space}px`);
+        style(container, '--dta-label-shift', nextShift);
         state.store.recalculatePositions();
         renderer.redraw(true);
         return;
       }
-      for (const item of layout.placements) {
+      for (const item of inline ? items : layout.placements) {
         const badge = badges.get(item.id);
-        style(badge, 'left', px(item.left + dx));
-        style(badge, 'top', px(item.top + dy));
+        const slot = slots.get(item.id)?.getBoundingClientRect();
+        style(badge, 'left', px(inline ? slot.left - frameBounds.left + 4 : item.left + dx));
+        style(badge, 'top', px(inline ? slot.top - frameBounds.top + (slot.height - item.badgeHeight) / 2 : item.top + dy));
       }
 
       const drawings = highlights.flatMap(highlight => {
@@ -147,7 +182,9 @@ export function labelRenderer({getOptions, onSelect}) {
         highlightsLayer.remove();
         labelsLayer.remove();
         container.style.removeProperty('--dta-label-space');
+        container.style.removeProperty('--dta-label-shift');
         badges.clear();
+        slots.clear();
       },
     };
     renderer = createRenderer(painter, container, state, viewport);

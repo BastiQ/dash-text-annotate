@@ -33,6 +33,7 @@ app.layout = html.Main([
         tag="ORG",
         tag_colors={"ORG": "#79b9a5"},
         show_labels=True,  # Set False for highlights without passage badges.
+        label_position="right",  # Also supports "left", "top", and "bottom".
         entities=[],
     ),
     html.Pre(id="annotations"),
@@ -59,7 +60,7 @@ Selecting `Acme` produces a record like this:
 - Select text with the mouse to apply the active `tag`.
 - Open **Find a passage**, enter exact text (including line breaks), choose an occurrence, and press Ctrl+Enter / ⌘+Enter or **Add annotation**. Enter inserts a line break. Search accepts LF, CRLF, and CR line endings while preserving the original text and offsets. This also works without a mouse.
 - Select a passage badge, highlight, or annotation row, then **Apply label** or **Delete selected**. Clicking a highlight never deletes it.
-- Category badges appear above each span's first line. Overlapping badges stack, and the document reserves line spacing for them. Long labels are visually truncated; their full label and passage remain available to assistive technology and in the annotation list. `show_labels=False` hides badges and restores compact spacing. This property can change in callbacks without resetting annotations or undo history.
+- Category badges appear to the right of each passage by default. Set `label_position` to `"left"`, `"right"`, `"top"`, or `"bottom"`. Left/right badges flow before/after the passage and wrap with the text when space is limited. Top/bottom badges anchor to the first/last line; overlapping badges stack with reserved line spacing. Long labels are visually truncated; their full label and passage remain available to assistive technology and in the annotation list. `show_labels=False` hides badges and removes their reserved space. Both properties can change in callbacks without resetting annotations or undo history.
 - **Undo / Redo** retain the last 100 local edits. With focus in the component, Ctrl/Cmd+Z undoes; Ctrl/Cmd+Shift+Z redoes. Text inputs retain their normal shortcuts.
 - Overlapping spans and identical spans with different tags are independent. Badges and the list give access to each overlapping annotation.
 - `read_only=True` keeps selection and review available while disabling editing.
@@ -108,7 +109,8 @@ When changing documents, return `text`, `entities`, and `document_id` in the **s
 | `read_only` | `False` | Disable editing. This is a UI setting, not server authorization. |
 | `show_toolbar` | `True` | Editing controls and accessible passage search. Keep enabled for keyboard annotation. |
 | `show_annotations` | `True` | Selectable list of labelled passages. |
-| `show_labels` | `True` | Selectable category badges above passages, independent of the toolbar and annotation list. |
+| `show_labels` | `True` | Selectable category badges, independent of the toolbar and annotation list. |
+| `label_position` | `"right"` | Badge position: `"left"`, `"right"`, `"top"`, or `"bottom"`. Only affects visible passage badges. |
 | `selected_id` | `None` | Output: current selected annotation ID. For overlapping highlights, use a badge or list row to select an individual record. |
 | `error` | `None` | Output: incoming-data validation error. |
 | `id` | Unset | String or Dash pattern-matching dictionary ID. |

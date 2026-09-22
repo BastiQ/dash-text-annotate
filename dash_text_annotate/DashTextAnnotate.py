@@ -51,6 +51,11 @@ Keyword arguments:
     Output: validation error for incoming data, or None. Invalid
     annotations are not rendered.
 
+- label_position (a value equal to: 'left', 'right', 'top', 'bottom'; optional):
+    Badge position: left, right (default), top, or bottom. Left/right
+    flow before/after the passage; top/bottom anchor to its first/last
+    line.
+
 - offset_unit (a value equal to: 'codepoint', 'utf16'; optional):
     Offset convention: codepoint (Python slicing, default), or utf16
     for legacy JavaScript data.
@@ -66,8 +71,8 @@ Keyword arguments:
     Show the selectable annotation list. Defaults to True.
 
 - show_labels (boolean; optional):
-    Show selectable category badges above annotated passages. Defaults
-    to True. Can change in callbacks without resetting edits.
+    Show selectable category badges beside annotated passages.
+    Defaults to True. Can change in callbacks without resetting edits.
 
 - show_toolbar (boolean; optional):
     Show editing controls and accessible passage search. Defaults to
@@ -101,6 +106,7 @@ Keyword arguments:
         show_toolbar: typing.Optional[bool] = None,
         show_annotations: typing.Optional[bool] = None,
         show_labels: typing.Optional[bool] = None,
+        label_position: typing.Optional[Literal["left", "right", "top", "bottom"]] = None,
         className: typing.Optional[str] = None,
         style: typing.Optional[typing.Any] = None,
         aria_label: typing.Optional[str] = None,
@@ -108,9 +114,9 @@ Keyword arguments:
         error: typing.Optional[str] = None,
         **kwargs
     ):
-        self._prop_names = ['id', 'aria_label', 'className', 'document_id', 'entities', 'error', 'offset_unit', 'read_only', 'selected_id', 'show_annotations', 'show_labels', 'show_toolbar', 'style', 'tag', 'tag_colors', 'text']
+        self._prop_names = ['id', 'aria_label', 'className', 'document_id', 'entities', 'error', 'label_position', 'offset_unit', 'read_only', 'selected_id', 'show_annotations', 'show_labels', 'show_toolbar', 'style', 'tag', 'tag_colors', 'text']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'aria_label', 'className', 'document_id', 'entities', 'error', 'offset_unit', 'read_only', 'selected_id', 'show_annotations', 'show_labels', 'show_toolbar', 'style', 'tag', 'tag_colors', 'text']
+        self.available_properties = ['id', 'aria_label', 'className', 'document_id', 'entities', 'error', 'label_position', 'offset_unit', 'read_only', 'selected_id', 'show_annotations', 'show_labels', 'show_toolbar', 'style', 'tag', 'tag_colors', 'text']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()

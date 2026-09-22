@@ -18,10 +18,12 @@ The document is the primary surface. A compact toolbar precedes it. Annotation
 rows follow it, with explicit review, relabel, and delete controls. No nested
 cards, decorative gradients, remote fonts, or entrance animations.
 
-Optional category badges anchor above each annotated passage. Category colors
+Optional category badges sit to the right of each annotated passage by default;
+left, top, and bottom positions are configurable. Category colors
 connect the badge and highlight; the source glyphs stay above the highlight fill.
-Overlapping badges stack into separate rows with reserved line spacing. Turning
-badges off restores compact text. Long badges truncate visually and retain their
+Side badges reserve inline space and wrap with text. Top/bottom badges stack into
+separate rows with reserved line spacing. Turning badges off restores compact
+text. Long badges truncate visually and retain their
 full accessible name and native tooltip.
 
 ## Interaction

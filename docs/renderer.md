@@ -7,24 +7,34 @@ scroll/resize observation. Our painter owns the highlight and badge elements,
 badge interactions, collision layout, and cleanup. It does not depend on
 Recogito's generated element names, private imports, or the inline-markers plugin.
 
-`show_labels=True` is the default. With labels hidden, highlights and annotation
-data remain available. Changing the option redraws the renderer without replacing
+`show_labels=True` and `label_position="right"` are the defaults. Position also
+accepts `"left"`, `"top"`, and `"bottom"`. With labels hidden, highlights and annotation
+data remain available. Changing either option redraws the renderer without replacing
 the annotator or resetting history. The toolbar and annotation list have separate
 visibility options. Keep the toolbar for keyboard creation; badges support
 keyboard selection with native buttons, including read-only review.
 
-Both drawing layers are siblings of the immutable document. The source contains
-only one text span; label text cannot enter source offsets, copied selections,
-or exported annotations. Text is rendered with `textContent`, never interpreted
+Both drawing layers are siblings of the document. Its source characters are
+immutable; label text cannot enter source offsets, copied selections, or exported
+annotations. Text is rendered with `textContent` or text nodes, never interpreted
 as HTML. Highlights sit behind the source glyphs, and badges use a separate layer.
 
-Badges anchor above the first rectangle of a passage, including passages that
-wrap across lines. `label-layout.mjs` packs collisions into rows and clamps long
-labels to the available width. The document reserves a uniform amount of line
-spacing for the largest stack. Layout considers offscreen annotations too, so
-scrolling does not change this spacing. Dense annotation sets can therefore
-require substantial space; hide labels for a compact review. Source text and
-offsets remain unchanged in both modes.
+Left/right badges reserve empty inline spans before/after their passage. These
+spans flow and wrap with the source, preventing badges from covering neighboring
+words. Multiple badges at the same offset each receive a slot. The slot elements
+contain no text and are hidden from assistive technology. React owns the source
+element but leaves its children to the renderer. When slots change, the component
+rebuilds DOM ranges through Recogito's public `setAnnotations` API and restores
+selection without changing entity values or history. Slot offsets use Recogito's
+UTF-16 coordinates, including when Dash exposes code-point offsets.
+
+Top/bottom badges anchor above the first or below the last rectangle of a passage.
+`label-layout.mjs` packs collisions into rows and clamps long labels to the
+available width. The document reserves a uniform amount of line spacing for the
+largest stack. Layout considers offscreen annotations too, so scrolling does not
+change this spacing. Dense annotation sets can require substantial space in any
+position; hide labels for a compact review. Source text and offsets remain
+unchanged in all modes.
 
 Badge nodes persist across redraws to retain keyboard focus. Removing a focused
 badge returns focus to the document. The painter guards queued redraws after
@@ -44,7 +54,8 @@ installed wheels on the supported Dash versions. Check:
 
 - Mouse and keyboard creation, Unicode offsets, and unchanged source text.
 - Badge selection, relabeling, read-only behavior, and metadata preservation.
-- Toggling labels while retaining selection and undo/redo history.
+- Toggling labels and all four positions while retaining selection and undo/redo history.
+- Mouse selection across empty inline slots, including Unicode and shared boundaries.
 - Overlaps, wrapped text, long labels, resizing, and scroll alignment.
 - Document replacement and removal of another component without orphan overlays.
 

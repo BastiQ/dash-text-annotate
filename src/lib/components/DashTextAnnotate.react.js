@@ -15,12 +15,13 @@ import '../styles.css';
 export default function DashTextAnnotate(props) {
     const {id, text = '', entities, document_id, tag = 'LABEL', tag_colors = {},
         offset_unit = 'codepoint', read_only = false, show_toolbar = true,
-        show_annotations = true, show_labels = true, className = '', style, aria_label = 'Text annotation'} = props;
+        show_annotations = true, show_labels = true, label_position = 'right',
+        className = '', style, aria_label = 'Text annotation'} = props;
     const uid = useId();
     const container = useRef(null);
     const engine = useRef(null);
     const current = useRef(props);
-    current.current = {...props, text, tag, tag_colors, offset_unit, read_only, show_labels};
+    current.current = {...props, text, tag, tag_colors, offset_unit, read_only, show_labels, label_position};
     const history = useRef(createHistory([]));
     const previous = useRef(null);
     const [view, setView] = useState(history.current);
@@ -68,10 +69,18 @@ export default function DashTextAnnotate(props) {
 
     useEffect(() => {
         const element = container.current;
+        // The renderer owns this node's children so React never reconciles its
+        // empty spacing elements. Document changes replace the keyed container.
+        element.querySelector('.dta-source').textContent = text;
         const annotator = createTextAnnotator(element, {
             renderer: labelRenderer({
-                getOptions: () => ({showLabels: current.current.show_labels}),
+                getOptions: () => ({showLabels: current.current.show_labels, labelPosition: current.current.label_position}),
                 onSelect: id => {engine.current?.setSelected(id); select(id);},
+                onSourceChange: () => {
+                    const selectedIds = engine.current?.getSelected().map(annotation => annotation.id) || [];
+                    paint(history.current.present);
+                    if (selectedIds.length) engine.current?.setSelected(selectedIds);
+                },
             }),
             selectionMode: 'all', allowModifierSelect: false,
             annotatingEnabled: !current.current.read_only,
@@ -154,7 +163,7 @@ export default function DashTextAnnotate(props) {
             return {fill: color, fillOpacity: state.selected ? .58 : state.hovered ? .48 : .32,
                 underlineColor: color, underlineThickness: state.selected ? 3 : 1};
         });
-    }, [read_only, error, tag_colors, view, text, document_id, offset_unit, show_labels]);
+    }, [read_only, error, tag_colors, view, text, document_id, offset_unit, show_labels, label_position]);
 
     const matches = findPassageMatches(text, query);
     const match = Math.min(occurrence, Math.max(0, matches.length - 1));
@@ -213,7 +222,7 @@ export default function DashTextAnnotate(props) {
             : 'Select text to add a label. Use Find a passage to annotate with the keyboard.'}</p>
         <div className="dta-document-frame">
             <div key={JSON.stringify([text, document_id, offset_unit])} ref={container} className="dta-document"
-                tabIndex={0} role="region" aria-label="Document text" aria-describedby={`${uid}-help`}><span className="dta-source">{text}</span></div>
+                tabIndex={0} role="region" aria-label="Document text" aria-describedby={`${uid}-help`}><span className="dta-source" /></div>
         </div>
         {!read_only && show_toolbar && <details className="dta-search">
             <summary>Find a passage</summary>
@@ -277,8 +286,10 @@ DashTextAnnotate.propTypes = {
     show_toolbar: PropTypes.bool,
     /** Show the selectable annotation list. Defaults to true. */
     show_annotations: PropTypes.bool,
-    /** Show selectable category badges above annotated passages. Defaults to true. Can change in callbacks without resetting edits. */
+    /** Show selectable category badges beside annotated passages. Defaults to true. Can change in callbacks without resetting edits. */
     show_labels: PropTypes.bool,
+    /** Badge position: left, right (default), top, or bottom. Left/right flow before/after the passage; top/bottom anchor to its first/last line. */
+    label_position: PropTypes.oneOf(['left', 'right', 'top', 'bottom']),
     /** Extra CSS class on the component root. */
     className: PropTypes.string,
     /** Inline styles on the component root. */

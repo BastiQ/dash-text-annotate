@@ -5,13 +5,14 @@ import dash_text_annotate as dta
 
 
 def test_component_defaults_and_pattern_id():
-    component = dta.DashTextAnnotate(text='Hello', id={'type': 'annotator', 'index': 1}, show_labels=False)
+    component = dta.DashTextAnnotate(text='Hello', id={'type': 'annotator', 'index': 1}, show_labels=False, label_position='left')
     payload = component.to_plotly_json()
     assert payload['namespace'] == 'dash_text_annotate'
     assert payload['props']['text'] == 'Hello'
     assert payload['props']['id']['index'] == 1
     assert 'entities' not in payload['props']
     assert payload['props']['show_labels'] is False
+    assert payload['props']['label_position'] == 'left'
 
 
 def test_dash_serves_all_declared_assets_locally():

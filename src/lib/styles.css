@@ -18,7 +18,8 @@
 .dta-help, .dta-status { font-size: .9em; line-height: 1.5; margin: .75rem 0; }
 .dta-document-frame { position: relative; display: flow-root; isolation: isolate; }
 .dta-document { white-space: pre-wrap; overflow-wrap: anywhere; line-height: calc(1.85em + var(--dta-label-space, 0px)); padding: 1rem; min-height: 4rem; border: 1px solid var(--dta-border); border-radius: .3rem; position: relative; }
-.dta-source { position: relative; z-index: 1; top: calc(var(--dta-label-space, 0px) / 2); }
+.dta-source { position: relative; z-index: 1; top: var(--dta-label-shift, 0px); }
+.dta-label-gap { display: inline-block; height: 1em; vertical-align: -.12em; user-select: none; -webkit-user-select: none; }
 .dta-document::selection { background: #9fcbc0; }
 .dta-error { padding: .75rem; border-left: 3px solid #ab3f3f; background: #fff0ec; color: #6b2525; }
 .dta-search { margin: 1rem 0; }
