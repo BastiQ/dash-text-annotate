@@ -3,10 +3,16 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      release-tag:
+        type: string
+        required: false
+        default: ''
 permissions:
   contents: read
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   build:
@@ -29,8 +35,11 @@ jobs:
       - run: python -m pytest -m 'not browser'
       - run: npm audit --audit-level=high
       - run: python -m build
-      - run: python -m twine check dist/*
-      - run: python scripts/check_dist.py dist
+      - run: python -m twine check --strict dist/*
+      - name: Validate distributions and release version
+        env:
+          RELEASE_TAG: ${{ inputs.release-tag }}
+        run: python scripts/check_dist.py dist --tag "$RELEASE_TAG"
       - uses: actions/upload-artifact@v7
         with:
           name: distributions

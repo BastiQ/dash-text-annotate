@@ -1,15 +1,15 @@
 <p align="center">
-  <img src="docs/media/header.svg" alt="Dash Text Annotate — text annotation, inside Dash." width="960">
+  <img src="https://raw.githubusercontent.com/BastiQ/dash-text-annotate/master/docs/media/header.svg" alt="Dash Text Annotate — text annotation, inside Dash." width="960">
 </p>
 
 <p align="center">
-  <a href="pyproject.toml"><img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat" alt="Python 3.10+"></a>
-  <a href="pyproject.toml"><img src="https://img.shields.io/badge/Dash-3%20%7C%204-245B50?style=flat" alt="Dash 3 and 4"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-64776D?style=flat" alt="MIT license"></a>
+  <a href="https://github.com/BastiQ/dash-text-annotate/blob/master/pyproject.toml"><img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat" alt="Python 3.10+"></a>
+  <a href="https://github.com/BastiQ/dash-text-annotate/blob/master/pyproject.toml"><img src="https://img.shields.io/badge/Dash-3%20%7C%204-245B50?style=flat" alt="Dash 3 and 4"></a>
+  <a href="https://github.com/BastiQ/dash-text-annotate/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-64776D?style=flat" alt="MIT license"></a>
 </p>
 
 <p align="center">
-  <a href="#demo">Demo</a> · <a href="#quick-start">Quick start</a> · <a href="docs/reference.md">Component reference</a>
+  <a href="#demo">Demo</a> · <a href="#quick-start">Quick start</a> · <a href="https://github.com/BastiQ/dash-text-annotate/blob/master/docs/reference.md">Component reference</a>
 </p>
 
 A small **text span annotation component for Dash**. Select a passage, assign a label, and receive structured annotations in Python callbacks. Source text stays intact, and everything runs inside your Dash app.
@@ -24,13 +24,23 @@ A small **text span annotation component for Dash**. Select a passage, assign a 
 Local upload files: upload-media/annotation-demo.mp4 and annotation-demo.gif.
 The upload-media folder is intentionally ignored by Git and excluded from packages. -->
 
-Try [the example app](usage.py): label a person and a date, undo, redo, and save. See the [quick start](#quick-start) to run it locally.
+Try [the example app](https://github.com/BastiQ/dash-text-annotate/blob/master/usage.py): label a person and a date, undo, redo, and save. See the [quick start](#quick-start) to run it locally.
 
 ## Quick start
 
 Requires **Python 3.10+** and **Dash 3 or 4**. JavaScript and CSS ship with the package; no Node.js or CDN is needed to use it.
 
-> **0.1.0 is a breaking development release and is not yet published.** Install from this checkout. Upgrading from 0.0.1? Read the [migration guide](docs/migration.md).
+Install the published package:
+
+```sh
+python -m pip install dash-text-annotate==0.1.0
+```
+
+If `0.1.0` is not yet listed on [PyPI](https://pypi.org/project/dash-text-annotate/), use the checkout installation below. The distribution name is `dash-text-annotate`; the Python import is `dash_text_annotate`.
+
+> **0.1.0 is a breaking beta release.** Upgrading from the historical 0.0.1 prototype? Read the [migration guide](https://github.com/BastiQ/dash-text-annotate/blob/master/docs/migration.md).
+
+To install from a [repository checkout](https://github.com/BastiQ/dash-text-annotate) and run the full demo:
 
 ```sh
 # From this repository checkout:
@@ -79,13 +89,14 @@ Selecting `Acme` produces a record like this:
 
 ## Documentation
 
-- [Component reference](docs/reference.md) — editing, keyboard controls, annotation data, and all properties.
-- [Migration guide](docs/migration.md) and [changelog](CHANGELOG.md) — upgrading from 0.0.1.
-- [Contributing](CONTRIBUTING.md) — local development, tests, and release checks.
-- [Scope and alternatives](docs/ecosystem.md) — where this component fits.
+- [Component reference](https://github.com/BastiQ/dash-text-annotate/blob/master/docs/reference.md) — editing, keyboard controls, annotation data, and all properties.
+- [Migration guide](https://github.com/BastiQ/dash-text-annotate/blob/master/docs/migration.md) and [changelog](https://github.com/BastiQ/dash-text-annotate/blob/master/CHANGELOG.md) — upgrading from 0.0.1.
+- [Contributing](https://github.com/BastiQ/dash-text-annotate/blob/master/CONTRIBUTING.md) — local development and tests.
+- [Release guide](https://github.com/BastiQ/dash-text-annotate/blob/master/docs/releasing.md) — building, publishing to PyPI, and listing in the Dash community.
+- [Scope and alternatives](https://github.com/BastiQ/dash-text-annotate/blob/master/docs/ecosystem.md) — where this component fits.
 
-The component handles plain-text annotation. Document storage, authentication, and collaboration belong to your app. Modern desktop browsers are the target; see the [validation record](docs/validation.md) for checks and limitations. Report bugs with a minimal Dash app, version details, and synthetic sample text.
+The component handles plain-text annotation. Document storage, authentication, and collaboration belong to your app. Modern desktop browsers are the target; see the [validation record](https://github.com/BastiQ/dash-text-annotate/blob/master/docs/validation.md) for checks and limitations. [Report bugs](https://github.com/BastiQ/dash-text-annotate/issues) with a minimal Dash app, version details, and synthetic sample text.
 
 ## License
 
-[MIT](LICENSE). Powered by [Recogito Text Annotator](https://github.com/recogito/text-annotator-js), using Dash's own React instance. Bundled libraries and their licenses are listed in [third-party notices](THIRD_PARTY_NOTICES.md). Thanks to the original `react-text-annotate` project and the Dash component tooling.
+[MIT](https://github.com/BastiQ/dash-text-annotate/blob/master/LICENSE). Powered by [Recogito Text Annotator](https://github.com/recogito/text-annotator-js), using Dash's own React instance. Bundled libraries and their licenses are listed in [third-party notices](https://github.com/BastiQ/dash-text-annotate/blob/master/THIRD_PARTY_NOTICES.md). Thanks to the original `react-text-annotate` project and the Dash component tooling.

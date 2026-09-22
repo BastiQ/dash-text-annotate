@@ -1,0 +1,71 @@
+name: Publish packages
+
+# A manual run on a version tag rehearses on TestPyPI. Publishing a GitHub
+# Release uploads to PyPI. Ordinary pushes and pull requests never publish.
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a version tag
+        run: |
+          if [ "$GITHUB_REF_TYPE" != tag ]; then
+            echo '::error::Run this workflow on a version tag, such as v0.1.0.'
+            exit 1
+          fi
+
+  validate:
+    needs: check-tag
+    uses: ./.github/workflows/ci.yml
+    with:
+      release-tag: ${{ github.ref_name }}
+
+  testpypi:
+    if: github.event_name == 'workflow_dispatch'
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/project/dash-text-annotate/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: distributions
+          path: dist
+      - name: Publish tested distributions to TestPyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          print-hash: true
+
+  pypi:
+    if: github.event_name == 'release'
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/dash-text-annotate/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: distributions
+          path: dist
+      - name: Publish tested distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
+        with:
+          print-hash: true

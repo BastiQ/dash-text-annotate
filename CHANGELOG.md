@@ -12,6 +12,8 @@
 
 ### Added and fixed
 
+- PyPI-ready installation instructions and metadata links, version-aligned wheel/sdist checks, and a Trusted Publishing workflow gated by the full CI matrix. Includes a release guide and Dash community announcement draft.
+- Browser checks retry transient DOM replacement during document switching.
 - Optional selectable passage labels (`show_labels=True` by default), isolated renderer, overlap layout, and a live demo toggle. Hiding labels preserves edits and undo history.
 - Configurable `label_position` (`left`, `right`, `top`, `bottom`, default `right`), with inline space for side badges and a live demo selector. Position changes preserve source offsets, selection, and undo history.
 - Correct overlapping annotations, preserved whitespace, stable IDs, Python validation/conversion helpers, and extra-field preservation.

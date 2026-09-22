@@ -53,10 +53,10 @@ Dependency license texts omitted from upstream npm packages are retained in `lic
 ## Release checklist
 
 1. Update `package.json` and `pyproject.toml` to the same version; regenerate `package-lock.json`, then run `npm run build`.
-2. Update the changelog and remove the development-release notice from the README only when the release is actually available.
+2. Update the changelog and the README install version. Keep publication status accurate; tag the final release commit only after the checks pass.
 3. Run all checks above and require the GitHub Actions matrix to pass. Review the sdist/wheel contents with `scripts/check_dist.py`.
 4. Install the wheel in a fresh environment outside the checkout and run `scripts/check_installed.py`. Verify the demo, import/export, and new/legacy offsets.
-5. Commit the release changes, tag the version, and publish the reviewed distributions using the maintainer's PyPI account or a configured trusted publisher. This repository's CI only builds artifacts; it never publishes automatically.
+5. Follow the [release guide](docs/releasing.md) to configure Trusted Publishing, rehearse on TestPyPI, and publish a GitHub Release. Ordinary CI builds artifacts; the separate publication workflow uploads them only after its full CI matrix succeeds.
 6. Check installation from PyPI and add release notes with migration instructions. Do not claim a supported version based only on successful package installation.
 
 See [product scope](PRODUCT.md), [design context](DESIGN.md), and [ecosystem rationale](docs/ecosystem.md) before adding unrelated workflow features.

@@ -18,11 +18,14 @@ classifiers = [
   "Framework :: Dash",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
+  "Operating System :: OS Independent",
   "Topic :: Text Processing :: Linguistic",
 ]
 
 [project.urls]
 Homepage = "https://github.com/BastiQ/dash-text-annotate"
+Documentation = "https://github.com/BastiQ/dash-text-annotate/blob/master/docs/reference.md"
+Source = "https://github.com/BastiQ/dash-text-annotate"
 Issues = "https://github.com/BastiQ/dash-text-annotate/issues"
 Changelog = "https://github.com/BastiQ/dash-text-annotate/blob/master/CHANGELOG.md"
 

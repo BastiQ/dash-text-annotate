@@ -1,11 +1,13 @@
 """Run outside the checkout after installing a wheel in a clean environment."""
 from pathlib import Path
+from importlib.metadata import version
 from dash import Dash
 import dash
 import dash_text_annotate as dta
 
 source_root = Path(__file__).resolve().parents[1]
 assert not Path(dta.__file__).resolve().is_relative_to(source_root), 'Imported source instead of installed wheel'
+assert dta.__version__ == version('dash-text-annotate'), 'Installed metadata and runtime versions differ'
 app = Dash(__name__)
 app.layout = dta.DashTextAnnotate(text='😀 Acme', tag='ORG')
 client = app.server.test_client()
