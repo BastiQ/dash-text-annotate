@@ -2,6 +2,7 @@
 import json
 import pytest
 from selenium.webdriver import ActionChains
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from .browser_app import TEXT, CROWDED_TEXT
@@ -18,7 +19,9 @@ def entities(driver):
 
 
 def wait(driver, condition):
-    return WebDriverWait(driver, 10).until(condition)
+    # Document switches replace DOM nodes between locating and reading them.
+    # Retry the locator on the next poll while retaining the original timeout.
+    return WebDriverWait(driver, 10, ignored_exceptions=(StaleElementReferenceException,)).until(condition)
 
 
 def button(driver, text):
