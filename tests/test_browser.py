@@ -29,10 +29,10 @@ def add_passage(driver, passage):
     details = element(driver, '#annotator details')
     if not details.get_attribute('open'):
         element(driver, '#annotator summary').click()
-    field = element(driver, '#annotator input')
+    field = element(driver, '#annotator textarea')
     field.clear()
     field.send_keys(passage)
-    field.send_keys(Keys.ENTER)
+    field.send_keys(Keys.CONTROL, Keys.ENTER)
 
 
 def drag_text(driver, start, end):
@@ -81,6 +81,39 @@ def test_mouse_selection_and_multiple_instances(browser):
     wait(browser, lambda _: not browser.find_elements('css selector', '#secondary'))
     add_passage(browser, 'Berlin')
     wait(browser, lambda _: len(entities(browser)) == 2)
+
+
+def test_keyboard_multiline_passage(browser):
+    passage = 'Berlin.\nAcme'
+    add_passage(browser, passage)
+    wait(browser, lambda _: len(entities(browser)) == 1)
+    annotation = entities(browser)[0]
+    assert annotation['text'] == passage
+    assert TEXT[annotation['start']:annotation['end']] == passage
+    assert element(browser, '#annotator .dta-document').get_attribute('textContent') == TEXT
+
+
+def test_reordered_callback_echo_preserves_undo(browser):
+    element(browser, '#annotated').click()
+    wait(browser, lambda _: len(entities(browser)) == 1)
+    original = entities(browser)[0]
+    add_passage(browser, 'ready')
+    wait(browser, lambda _: len(entities(browser)) == 2)
+    element(browser, '#echo').click()
+    wait(browser, lambda _: list(entities(browser)[0]) == sorted(entities(browser)[0]))
+    assert button(browser, 'Undo').is_enabled()
+    button(browser, 'Undo').click()
+    wait(browser, lambda _: entities(browser) == [original])
+
+
+def test_reordered_old_spans_are_cleared_on_document_switch(browser):
+    element(browser, '#overlaps').click()
+    wait(browser, lambda _: len(entities(browser)) == 2)
+    element(browser, '#new-reordered').click()
+    wait(browser, lambda _: element(browser, '#annotator .dta-document').text == 'A different document.')
+    wait(browser, lambda _: entities(browser) == [])
+    assert not browser.find_elements('css selector', '#annotator .dta-annotation')
+    assert not button(browser, 'Undo').is_enabled()
 
 
 def test_overlap_invalid_input_and_document_replacement(browser):

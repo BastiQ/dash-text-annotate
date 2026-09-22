@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {normalizeEntities, toRecogito, fromSelection, createHistory, editHistory, undoHistory, redoHistory} from '../../src/lib/model.mjs';
+import {normalizeEntities, toRecogito, fromSelection, createHistory, editHistory, undoHistory, redoHistory, sameEntities, findPassageMatches} from '../../src/lib/model.mjs';
 
 test('optional and null entities are safe empty values', () => {
   assert.deepEqual(normalizeEntities('Hello'), []);
@@ -46,4 +46,36 @@ test('undo, redo and branching preserve data and bound memory', () => {
   assert.equal(history.future.length, 0);
   for (let i=0; i<120; i++) history = editHistory(history, [{id: String(i)}]);
   assert.equal(history.past.length, 100);
+});
+
+test('server echoes ignore object key order while preserving meaningful changes', () => {
+  const original = normalizeEntities('Acme', [{id: 'x', start: 0, end: 4, tag: 'ORG',
+    metadata: {reviewed: true, labels: ['a', 'b']}}]);
+  const echo = normalizeEntities('Acme', [{metadata: {labels: ['a', 'b'], reviewed: true},
+    text: 'Acme', tag: 'ORG', end: 4, start: 0, id: 'x'}]);
+  assert.equal(sameEntities(original, echo), true);
+  const history = editHistory(createHistory([]), original);
+  assert.equal(editHistory(history, echo), history);
+  assert.deepEqual(undoHistory(history).present, []);
+  assert.equal(sameEntities(original, [{...echo[0], tag: 'PERSON'}]), false);
+  assert.equal(sameEntities(original, [{...echo[0], metadata: {reviewed: true, labels: ['b', 'a']}}]), false);
+  assert.equal(sameEntities(original, [{...echo[0], metadata: null}]), false);
+  assert.equal(sameEntities([{id: 'a'}, {id: 'b'}], [{id: 'b'}, {id: 'a'}]), false);
+  assert.equal(sameEntities([], {}), false);
+});
+
+test('multiline passage search preserves source line endings and Unicode offsets', () => {
+  for (const newline of ['\n', '\r\n', '\r']) {
+    const text = `😀 Berlin.${newline}Acme returns.`;
+    const [match] = findPassageMatches(text, 'Berlin.\nAcme');
+    assert.deepEqual(match, {start: 3, end: 14 + newline.length});
+    const entity = fromSelection(text, {id: 'multiline', target: {selector: [match]}}, 'ORG', {}, 'codepoint');
+    assert.equal(entity.start, 2);
+    assert.equal(entity.end, 13 + newline.length);
+    assert.equal(entity.text, `Berlin.${newline}Acme`);
+  }
+  assert.deepEqual(findPassageMatches('aaaa', 'aa'), [{start: 0, end: 2}, {start: 1, end: 3}, {start: 2, end: 4}]);
+  assert.deepEqual(findPassageMatches('a\nb', 'a\r\nb'), [{start: 0, end: 3}]);
+  assert.deepEqual(findPassageMatches('abc', ''), []);
+  assert.deepEqual(findPassageMatches('abc', 'd'), []);
 });

@@ -73,7 +73,34 @@ export function fromSelection(text, annotation, tag, colors, unit) {
 }
 
 export function sameEntities(left, right) {
-  return JSON.stringify(left) === JSON.stringify(right);
+  if (left === right) return true;
+  if (left == null || right == null || typeof left !== 'object' || typeof right !== 'object') return false;
+  if (Array.isArray(left) !== Array.isArray(right)) return false;
+  if (Array.isArray(left) && left.length !== right.length) return false;
+  const keys = Object.keys(left);
+  return keys.length === Object.keys(right).length && keys.every(key =>
+    Object.hasOwn(right, key) && sameEntities(left[key], right[key]));
+}
+
+/** Match textarea line endings while keeping offsets in the untouched source. */
+export function findPassageMatches(text, query) {
+  const needle = query.replace(/\r\n?/g, '\n');
+  if (!needle) return [];
+  let searchable = '';
+  const boundaries = [0];
+  for (let index = 0; index < text.length; index++) {
+    const char = text[index];
+    if (char === '\r' && text[index + 1] === '\n') index++;
+    searchable += char === '\r' ? '\n' : char;
+    boundaries.push(index + 1);
+  }
+  const matches = [];
+  let start = searchable.indexOf(needle);
+  while (start !== -1) {
+    matches.push({start: boundaries[start], end: boundaries[start + needle.length]});
+    start = searchable.indexOf(needle, start + 1);
+  }
+  return matches;
 }
 
 // Pure history: local edits are reversible; authoritative external updates reset it.

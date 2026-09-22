@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {v4 as uuid} from 'uuid';
 import {createTextAnnotator} from '@recogito/text-annotator';
 import {createHistory, editHistory, undoHistory, redoHistory, normalizeEntities,
-    toRecogito, fromSelection, sameEntities} from '../model.mjs';
+    toRecogito, fromSelection, sameEntities, findPassageMatches} from '../model.mjs';
 import '../styles.css';
 
 /**
@@ -151,23 +151,16 @@ export default function DashTextAnnotate(props) {
         });
     }, [read_only, error, tag_colors, view, text, document_id, offset_unit]);
 
-    const matches = [];
-    if (query) {
-        let position = text.indexOf(query);
-        while (position !== -1) {
-            matches.push(position);
-            position = text.indexOf(query, position + 1);
-        }
-    }
+    const matches = findPassageMatches(text, query);
     const match = Math.min(occurrence, Math.max(0, matches.length - 1));
     const chosen = view.present.find(entity => entity.id === selected);
     const validTag = typeof tag === 'string' && !!tag.trim();
     function addMatch() {
         if (!matches.length || !validTag) return;
-        const start = matches[match];
+        const {start, end} = matches[match];
         try {
             add(fromSelection(text, {id: uuid(), target: {selector: [
-                {start, end: start + query.length},
+                {start, end},
             ]}}, tag, tag_colors, offset_unit));
         } catch (exception) {
             setStatus(exception.message);
@@ -219,15 +212,21 @@ export default function DashTextAnnotate(props) {
             <summary>Find a passage</summary>
             <div className="dta-search-controls">
                 <label htmlFor={`${uid}-query`}>Exact text</label>
-                <input id={`${uid}-query`} value={query} onChange={event => {setQuery(event.target.value); setOccurrence(0);}}
-                    onKeyDown={event => {if (event.key === 'Enter') {event.preventDefault(); addMatch();}}} />
+                <textarea id={`${uid}-query`} rows={2} value={query} aria-describedby={`${uid}-query-help`}
+                    onChange={event => {setQuery(event.target.value); setOccurrence(0);}}
+                    onKeyDown={event => {
+                        if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+                            event.preventDefault(); addMatch();
+                        }
+                    }} />
                 <span role="status">{query ? (matches.length ? `Match ${match + 1} of ${matches.length}` : 'No matches') : 'Enter a passage from the document'}</span>
                 <button type="button" onClick={() => setOccurrence((match + matches.length - 1) % matches.length)} disabled={matches.length < 2}>Previous match</button>
                 <button type="button" onClick={() => setOccurrence((match + 1) % matches.length)} disabled={matches.length < 2}>Next match</button>
                 <button type="button" onClick={addMatch} disabled={!!error || !matches.length || !validTag}>Add annotation</button>
             </div>
+            <p id={`${uid}-query-help`} className="dta-help">Enter inserts a line break. Ctrl+Enter or ⌘+Enter adds the annotation.</p>
             {matches.length > 0 && <p className="dta-match-preview" aria-label="Match context">
-                …{text.slice(Math.max(0, matches[match] - 35), matches[match])}<mark>{query}</mark>{text.slice(matches[match] + query.length, matches[match] + query.length + 35)}…
+                …{text.slice(Math.max(0, matches[match].start - 35), matches[match].start)}<mark>{text.slice(matches[match].start, matches[match].end)}</mark>{text.slice(matches[match].end, matches[match].end + 35)}…
             </p>}
         </details>}
         {show_annotations && <div className="dta-annotations">

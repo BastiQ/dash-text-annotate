@@ -56,7 +56,7 @@ Selecting `Acme` produces a record like this:
 ## Editing and review
 
 - Select text with the mouse to apply the active `tag`.
-- Open **Find a passage**, enter exact text, choose an occurrence, and press Enter or **Add annotation**. This also works without a mouse.
+- Open **Find a passage**, enter exact text (including line breaks), choose an occurrence, and press Ctrl+Enter / ⌘+Enter or **Add annotation**. Enter inserts a line break. Search accepts LF, CRLF, and CR line endings while preserving the original text and offsets. This also works without a mouse.
 - Select a highlight or annotation row, then **Apply label** or **Delete selected**. Clicking a highlight never deletes it.
 - **Undo / Redo** retain the last 100 local edits. With focus in the component, Ctrl/Cmd+Z undoes; Ctrl/Cmd+Shift+Z redoes. Text inputs retain their normal shortcuts.
 - Overlapping spans and identical spans with different tags are independent. The list gives access to every overlapping annotation.

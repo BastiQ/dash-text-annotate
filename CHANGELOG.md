@@ -17,6 +17,8 @@
 - Session-isolated save/reload and JSON import/export demo with current Dash imports and run API.
 - Locked frontend build, current metadata generation, packaged licenses, generated Python typing, local JS/CSS, package/browser regression tests, CI, and release guidance.
 - Reject selections that cross the document boundary instead of emitting null offsets.
+- Preserve undo history and stale-document protection when callbacks reorder JSON fields.
+- Support keyboard annotation across line breaks, including CRLF source text, without changing source offsets.
 
 ## 0.0.1 — Historical prototype
 

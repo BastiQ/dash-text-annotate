@@ -7,7 +7,7 @@
   min-width: 0;
 }
 .dta *, .dta *::before, .dta *::after { box-sizing: border-box; }
-.dta button, .dta input { font: inherit; color: inherit; }
+.dta button, .dta textarea { font: inherit; color: inherit; }
 .dta button, .dta summary { cursor: pointer; }
 .dta button { border: 1px solid var(--dta-border); border-radius: .3rem; background: transparent; padding: .45rem .7rem; }
 .dta button:hover:not(:disabled) { background: var(--dta-surface); }
@@ -22,7 +22,7 @@
 .dta-search { margin: 1rem 0; }
 .dta-search summary { width: fit-content; padding: .3rem 0; font-weight: 600; }
 .dta-search-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: .75rem; }
-.dta input { padding: .5rem; background: transparent; border: 1px solid var(--dta-border); border-radius: .3rem; min-width: 8rem; max-width: 100%; }
+.dta textarea { padding: .5rem; background: transparent; border: 1px solid var(--dta-border); border-radius: .3rem; min-width: 8rem; max-width: 100%; resize: vertical; }
 .dta-match-preview { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9em; }
 .dta mark { background: #c9e1d9; color: inherit; }
 .dta-count { font-weight: 650; margin-bottom: .5rem; }
