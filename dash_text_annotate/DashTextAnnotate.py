@@ -65,6 +65,10 @@ Keyword arguments:
 - show_annotations (boolean; optional):
     Show the selectable annotation list. Defaults to True.
 
+- show_labels (boolean; optional):
+    Show selectable category badges above annotated passages. Defaults
+    to True. Can change in callbacks without resetting edits.
+
 - show_toolbar (boolean; optional):
     Show editing controls and accessible passage search. Defaults to
     True.
@@ -96,6 +100,7 @@ Keyword arguments:
         read_only: typing.Optional[bool] = None,
         show_toolbar: typing.Optional[bool] = None,
         show_annotations: typing.Optional[bool] = None,
+        show_labels: typing.Optional[bool] = None,
         className: typing.Optional[str] = None,
         style: typing.Optional[typing.Any] = None,
         aria_label: typing.Optional[str] = None,
@@ -103,9 +108,9 @@ Keyword arguments:
         error: typing.Optional[str] = None,
         **kwargs
     ):
-        self._prop_names = ['id', 'aria_label', 'className', 'document_id', 'entities', 'error', 'offset_unit', 'read_only', 'selected_id', 'show_annotations', 'show_toolbar', 'style', 'tag', 'tag_colors', 'text']
+        self._prop_names = ['id', 'aria_label', 'className', 'document_id', 'entities', 'error', 'offset_unit', 'read_only', 'selected_id', 'show_annotations', 'show_labels', 'show_toolbar', 'style', 'tag', 'tag_colors', 'text']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'aria_label', 'className', 'document_id', 'entities', 'error', 'offset_unit', 'read_only', 'selected_id', 'show_annotations', 'show_toolbar', 'style', 'tag', 'tag_colors', 'text']
+        self.available_properties = ['id', 'aria_label', 'className', 'document_id', 'entities', 'error', 'offset_unit', 'read_only', 'selected_id', 'show_annotations', 'show_labels', 'show_toolbar', 'style', 'tag', 'tag_colors', 'text']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()

@@ -2,6 +2,7 @@ import React, {useEffect, useId, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {v4 as uuid} from 'uuid';
 import {createTextAnnotator} from '@recogito/text-annotator';
+import {labelRenderer} from '../label-renderer.mjs';
 import {createHistory, editHistory, undoHistory, redoHistory, normalizeEntities,
     toRecogito, fromSelection, sameEntities, findPassageMatches} from '../model.mjs';
 import '../styles.css';
@@ -14,12 +15,12 @@ import '../styles.css';
 export default function DashTextAnnotate(props) {
     const {id, text = '', entities, document_id, tag = 'LABEL', tag_colors = {},
         offset_unit = 'codepoint', read_only = false, show_toolbar = true,
-        show_annotations = true, className = '', style, aria_label = 'Text annotation'} = props;
+        show_annotations = true, show_labels = true, className = '', style, aria_label = 'Text annotation'} = props;
     const uid = useId();
     const container = useRef(null);
     const engine = useRef(null);
     const current = useRef(props);
-    current.current = {...props, text, tag, tag_colors, offset_unit, read_only};
+    current.current = {...props, text, tag, tag_colors, offset_unit, read_only, show_labels};
     const history = useRef(createHistory([]));
     const previous = useRef(null);
     const [view, setView] = useState(history.current);
@@ -68,7 +69,11 @@ export default function DashTextAnnotate(props) {
     useEffect(() => {
         const element = container.current;
         const annotator = createTextAnnotator(element, {
-            renderer: 'SPANS', selectionMode: 'all', allowModifierSelect: false,
+            renderer: labelRenderer({
+                getOptions: () => ({showLabels: current.current.show_labels}),
+                onSelect: id => {engine.current?.setSelected(id); select(id);},
+            }),
+            selectionMode: 'all', allowModifierSelect: false,
             annotatingEnabled: !current.current.read_only,
         });
         engine.current = annotator;
@@ -146,10 +151,10 @@ export default function DashTextAnnotate(props) {
         engine.current?.setStyle((annotation, state) => {
             const value = view.present.find(entity => entity.id === annotation.id);
             const color = value?.color || tag_colors?.[value?.tag] || '#b9d7ce';
-            return {fill: color,
+            return {fill: color, fillOpacity: state.selected ? .58 : state.hovered ? .48 : .32,
                 underlineColor: color, underlineThickness: state.selected ? 3 : 1};
         });
-    }, [read_only, error, tag_colors, view, text, document_id, offset_unit]);
+    }, [read_only, error, tag_colors, view, text, document_id, offset_unit, show_labels]);
 
     const matches = findPassageMatches(text, query);
     const match = Math.min(occurrence, Math.max(0, matches.length - 1));
@@ -206,8 +211,10 @@ export default function DashTextAnnotate(props) {
         <p id={`${uid}-help`} className="dta-help">{read_only
             ? 'Select a highlight or an annotation below to review it.'
             : 'Select text to add a label. Use Find a passage to annotate with the keyboard.'}</p>
-        <div key={JSON.stringify([text, document_id, offset_unit])} ref={container} className="dta-document"
-            tabIndex={0} role="region" aria-label="Document text" aria-describedby={`${uid}-help`}>{text}</div>
+        <div className="dta-document-frame">
+            <div key={JSON.stringify([text, document_id, offset_unit])} ref={container} className="dta-document"
+                tabIndex={0} role="region" aria-label="Document text" aria-describedby={`${uid}-help`}><span className="dta-source">{text}</span></div>
+        </div>
         {!read_only && show_toolbar && <details className="dta-search">
             <summary>Find a passage</summary>
             <div className="dta-search-controls">
@@ -270,6 +277,8 @@ DashTextAnnotate.propTypes = {
     show_toolbar: PropTypes.bool,
     /** Show the selectable annotation list. Defaults to true. */
     show_annotations: PropTypes.bool,
+    /** Show selectable category badges above annotated passages. Defaults to true. Can change in callbacks without resetting edits. */
+    show_labels: PropTypes.bool,
     /** Extra CSS class on the component root. */
     className: PropTypes.string,
     /** Inline styles on the component root. */

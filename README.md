@@ -32,6 +32,7 @@ app.layout = html.Main([
         text="😀 Acme opened an office in Berlin.",
         tag="ORG",
         tag_colors={"ORG": "#79b9a5"},
+        show_labels=True,  # Set False for highlights without passage badges.
         entities=[],
     ),
     html.Pre(id="annotations"),
@@ -57,9 +58,10 @@ Selecting `Acme` produces a record like this:
 
 - Select text with the mouse to apply the active `tag`.
 - Open **Find a passage**, enter exact text (including line breaks), choose an occurrence, and press Ctrl+Enter / ⌘+Enter or **Add annotation**. Enter inserts a line break. Search accepts LF, CRLF, and CR line endings while preserving the original text and offsets. This also works without a mouse.
-- Select a highlight or annotation row, then **Apply label** or **Delete selected**. Clicking a highlight never deletes it.
+- Select a passage badge, highlight, or annotation row, then **Apply label** or **Delete selected**. Clicking a highlight never deletes it.
+- Category badges appear above each span's first line. Overlapping badges stack, and the document reserves line spacing for them. Long labels are visually truncated; their full label and passage remain available to assistive technology and in the annotation list. `show_labels=False` hides badges and restores compact spacing. This property can change in callbacks without resetting annotations or undo history.
 - **Undo / Redo** retain the last 100 local edits. With focus in the component, Ctrl/Cmd+Z undoes; Ctrl/Cmd+Shift+Z redoes. Text inputs retain their normal shortcuts.
-- Overlapping spans and identical spans with different tags are independent. The list gives access to every overlapping annotation.
+- Overlapping spans and identical spans with different tags are independent. Badges and the list give access to each overlapping annotation.
 - `read_only=True` keeps selection and review available while disabling editing.
 
 Whitespace and newlines are preserved. Only plain text is supported; HTML strings display as text. The widget does not supply document storage, authentication, collaboration, relations, discontinuous spans, or a rich-text editor. See [scope and alternatives](docs/ecosystem.md).
@@ -106,13 +108,16 @@ When changing documents, return `text`, `entities`, and `document_id` in the **s
 | `read_only` | `False` | Disable editing. This is a UI setting, not server authorization. |
 | `show_toolbar` | `True` | Editing controls and accessible passage search. Keep enabled for keyboard annotation. |
 | `show_annotations` | `True` | Selectable list of labelled passages. |
-| `selected_id` | `None` | Output: current selected annotation ID. For overlapping highlights, use the list to select an individual record. |
+| `show_labels` | `True` | Selectable category badges above passages, independent of the toolbar and annotation list. |
+| `selected_id` | `None` | Output: current selected annotation ID. For overlapping highlights, use a badge or list row to select an individual record. |
 | `error` | `None` | Output: incoming-data validation error. |
 | `id` | Unset | String or Dash pattern-matching dictionary ID. |
 | `className`, `style` | Unset | Root CSS class and style. |
 | `aria_label` | `"Text annotation"` | Accessible name for the widget. |
 
-CSS is scoped to `.dta`; font and text color inherit from your app. Override `--dta-accent`, `--dta-border`, and `--dta-surface` on your component class to match a theme. The SPANS renderer is used for independent instances and overlapping highlights. Bundle size is about 70 KB of minified JavaScript before compression, with React supplied by Dash.
+CSS is scoped to `.dta`; font and text color inherit from your app. Override `--dta-accent`, `--dta-border`, and `--dta-surface` on your component class to match a theme. Badge surfaces and text use `--dta-label-surface` and `--dta-label-text`; their category color comes from the existing `color` / `tag_colors` properties.
+
+An isolated renderer uses Recogito's exported renderer API. Its overlays live outside the source text, so badge text never changes offsets or copied passages. The renderer and its upgrade checks are described in [renderer maintenance](docs/renderer.md). React is supplied by Dash; no inline-markers plugin or fork is needed.
 
 ## Development and support
 

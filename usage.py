@@ -67,7 +67,10 @@ def create_app():
                         ('ORG', 'Organisation'), ('PERSON', 'Person'), ('PLACE', 'Place'), ('DATE', 'Date')]],
                     value='ORG', clearable=False, searchable=False,
                 )]),
-                dcc.Checklist(id='read-only', options=[{'label': ' Read-only review', 'value': 'yes'}], value=[]),
+                html.Div([
+                    dcc.Checklist(id='read-only', options=[{'label': ' Read-only review', 'value': 'yes'}], value=[]),
+                    dcc.Checklist(id='inline-labels', options=[{'label': ' Show passage labels', 'value': 'yes'}], value=['yes']),
+                ], className='demo-options'),
             ], className='demo-controls'),
             html.P('Save before switching documents. Saved annotations stay in this browser session.', className='hint'),
             DashTextAnnotate(id='annotator', text='', entities=[], document_id='initial', tag='ORG', tag_colors=COLORS),
@@ -117,6 +120,10 @@ def create_app():
 
     @app.callback(Output('annotator', 'read_only'), Input('read-only', 'value'))
     def read_only(value):
+        return bool(value)
+
+    @app.callback(Output('annotator', 'show_labels'), Input('inline-labels', 'value'))
+    def show_labels(value):
         return bool(value)
 
     @app.callback(Output('output', 'children'), Input('annotator', 'entities'))

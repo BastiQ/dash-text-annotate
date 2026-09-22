@@ -12,6 +12,7 @@
 
 ### Added and fixed
 
+- Optional selectable passage labels (`show_labels=True` by default), isolated renderer, overlap layout, and a live demo toggle. Hiding labels preserves edits and undo history.
 - Correct overlapping annotations, preserved whitespace, stable IDs, Python validation/conversion helpers, and extra-field preservation.
 - Safe defaults, read-only review, selection/error callbacks, undo/redo, relabeling, accessible exact-passage search, scoped themes, and pattern-matching IDs.
 - Session-isolated save/reload and JSON import/export demo with current Dash imports and run API.

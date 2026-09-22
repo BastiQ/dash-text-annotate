@@ -18,6 +18,12 @@ The document is the primary surface. A compact toolbar precedes it. Annotation
 rows follow it, with explicit review, relabel, and delete controls. No nested
 cards, decorative gradients, remote fonts, or entrance animations.
 
+Optional category badges anchor above each annotated passage. Category colors
+connect the badge and highlight; the source glyphs stay above the highlight fill.
+Overlapping badges stack into separate rows with reserved line spacing. Turning
+badges off restores compact text. Long badges truncate visually and retain their
+full accessible name and native tooltip.
+
 ## Interaction
 
 Visible focus rings, generous targets, wrapped controls at narrow widths,

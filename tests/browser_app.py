@@ -4,6 +4,7 @@ from dash import Dash, Input, Output, State, ctx, html, no_update
 from dash_text_annotate import DashTextAnnotate
 
 TEXT = '😀 Acme works in Berlin.\nAcme returns on Monday.'
+CROWDED_TEXT = '😀 Acme works with the international research team on a detailed review of annotation tools in Berlin.\nAcme returns on Monday.'
 
 
 def make_app():
@@ -17,6 +18,7 @@ def make_app():
             ('readonly', 'Toggle read-only'), ('unmount', 'Remove secondary'),
             ('echo', 'Echo reordered fields'),
             ('new-reordered', 'New document with reordered old spans'),
+            ('labels', 'Toggle passage labels'), ('crowded', 'Load crowded labels'),
         ]]),
         DashTextAnnotate(id='annotator', text=TEXT, tag='ORG'),
         html.Pre(id='output'), html.Pre(id='error-output'), html.Pre(id='selected-output'),
@@ -40,10 +42,13 @@ def make_app():
     @app.callback(
         Output('annotator', 'entities'), Output('annotator', 'text'), Output('annotator', 'document_id'),
         Input('overlaps', 'n_clicks'), Input('invalid', 'n_clicks'), Input('clear', 'n_clicks'),
-        Input('new', 'n_clicks'), Input('annotated', 'n_clicks'), Input('echo', 'n_clicks'), Input('new-reordered', 'n_clicks'),
+        Input('new', 'n_clicks'), Input('annotated', 'n_clicks'), Input('echo', 'n_clicks'), Input('new-reordered', 'n_clicks'), Input('crowded', 'n_clicks'),
         State('annotator', 'entities'), prevent_initial_call=True,
     )
     def load(*_):
+        if ctx.triggered_id == 'crowded':
+            return [{'id': f'overlap-{i}', 'start': 2, 'end': CROWDED_TEXT.rindex('Acme') + 4 if i == 0 else 6, 'tag': tag}
+                    for i, tag in enumerate(['ORG', 'REVIEW', 'A very long category label that should fit within the document'])], CROWDED_TEXT, 'crowded'
         if ctx.triggered_id == 'new-reordered':
             return json.loads(json.dumps(_[-1], sort_keys=True)), 'A different document.', 'different'
         if ctx.triggered_id == 'echo':
@@ -66,6 +71,10 @@ def make_app():
     @app.callback(Output('annotator', 'read_only'), Input('readonly', 'n_clicks'), State('annotator', 'read_only'), prevent_initial_call=True)
     def readonly(_, value):
         return not value
+
+    @app.callback(Output('annotator', 'show_labels'), Input('labels', 'n_clicks'), State('annotator', 'show_labels'), prevent_initial_call=True)
+    def labels(_, value):
+        return value is False
 
     @app.callback(Output('secondary-container', 'children'), Input('unmount', 'n_clicks'), prevent_initial_call=True)
     def unmount(_):

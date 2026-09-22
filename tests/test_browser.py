@@ -4,7 +4,7 @@ import pytest
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-from .browser_app import TEXT
+from .browser_app import TEXT, CROWDED_TEXT
 
 pytestmark = pytest.mark.browser
 
@@ -39,7 +39,7 @@ def drag_text(driver, start, end):
     doc = element(driver, '#annotator .dta-document')
     # Measure the actual text node; do not depend on fonts or screen coordinates.
     rects = driver.execute_script('''
-      const el=arguments[0], node=el.firstChild;
+      const el=arguments[0], node=el.querySelector('.dta-source').firstChild;
       const points=[arguments[1],arguments[2]].map(offset=>{
         const range=document.createRange(); range.setStart(node,offset); range.setEnd(node,offset);
         const r=range.getBoundingClientRect(); return {x:r.x,y:r.y+r.height/2};
@@ -122,7 +122,7 @@ def test_overlap_invalid_input_and_document_replacement(browser):
     assert element(browser, '#annotator .dta-document').get_attribute('textContent') == TEXT
     element(browser, '#invalid').click()
     wait(browser, lambda _: 'offsets' in element(browser, '#error-output').text)
-    assert not browser.find_elements('css selector', '#annotator .r6o-annotation')
+    wait(browser, lambda _: not browser.find_elements('css selector', '#annotator .dta-highlight'))
     assert element(browser, '#annotator .dta-document').get_attribute('textContent') == TEXT
     element(browser, '#overlaps').click()
     wait(browser, lambda _: element(browser, '#error-output').text == '')
@@ -156,3 +156,50 @@ def test_selection_crossing_document_boundary_is_rejected(browser):
     ActionChains(browser).move_to_element(outside).click_and_hold().pause(.1).move_to_element_with_offset(doc, -doc.size['width']/2+75, -doc.size['height']/2+30).pause(.2).release().perform()
     wait(browser, lambda _: 'entirely inside' in element(browser, '#annotator .dta-status').text)
     assert entities(browser) == []
+
+
+def test_optional_labels_preserve_selection_data_and_history(browser):
+    add_passage(browser, 'Acme')
+    wait(browser, lambda _: len(entities(browser)) == 1)
+    wait(browser, lambda _: len(browser.find_elements('css selector', '#annotator .dta-label-button')) == 1)
+    original = entities(browser)
+    badge = element(browser, '#annotator .dta-label-button')
+    badge.send_keys(Keys.ENTER)
+    wait(browser, lambda _: element(browser, '#selected-output').text == original[0]['id'])
+    element(browser, '#labels').click()
+    wait(browser, lambda _: not browser.find_elements('css selector', '#annotator .dta-label-button'))
+    assert entities(browser) == original
+    assert button(browser, 'Undo').is_enabled()
+    assert element(browser, '#selected-output').text == original[0]['id']
+    element(browser, '#labels').click()
+    wait(browser, lambda _: len(browser.find_elements('css selector', '#annotator .dta-label-button')) == 1)
+    assert element(browser, '#annotator .dta-document').get_attribute('textContent') == TEXT
+    button(browser, 'Undo').click()
+    wait(browser, lambda _: entities(browser) == [])
+    wait(browser, lambda _: not browser.find_elements('css selector', '#annotator .dta-label-button'))
+
+
+def test_overlapping_labels_wrap_resize_and_document_cleanup(browser):
+    element(browser, '#crowded').click()
+    wait(browser, lambda _: len(browser.find_elements('css selector', '#annotator .dta-label-button')) == 3)
+    for width in [540, 1000]:
+        browser.set_window_size(width, 1100)
+        def labels_fit(_):
+            return browser.execute_script('''
+                const doc=document.querySelector('#annotator .dta-document').getBoundingClientRect();
+                const labels=[...document.querySelectorAll('#annotator .dta-label-button')].map(el=>el.getBoundingClientRect());
+                return labels.length===3 && labels.every((a,i)=>a.left>=doc.left && a.right<=doc.right && a.top>=doc.top &&
+                  labels.every((b,j)=>i===j || a.right<=b.left || b.right<=a.left || a.bottom<=b.top || b.bottom<=a.top));
+            ''')
+        wait(browser, labels_fit)
+        assert element(browser, '#annotator .dta-document').get_attribute('textContent') == CROWDED_TEXT
+        assert len(browser.find_elements('css selector', '#annotator .dta-highlight[data-annotation="overlap-0"]')) >= 2
+    element(browser, '#annotator .dta-label-button').click()
+    wait(browser, lambda _: element(browser, '#selected-output').text.startswith('overlap-'))
+    element(browser, '#readonly').click()
+    wait(browser, lambda _: not browser.find_elements('css selector', '#annotator .dta-remove'))
+    assert len(browser.find_elements('css selector', '#annotator .dta-label-button')) == 3
+    element(browser, '#new').click()
+    wait(browser, lambda _: not browser.find_elements('css selector', '#annotator .dta-label-button'))
+    assert len(browser.find_elements('css selector', '#annotator .dta-labels')) == 1
+    assert len(browser.find_elements('css selector', '#annotator .dta-highlights')) == 1
