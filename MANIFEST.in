@@ -7,4 +7,8 @@ recursive-include tests *.py *.mjs
 prune node_modules
 prune venv
 prune .venv
-global-exclude *wps-hmr* output.js *.pyc
+global-exclude *wps-hmr* output.js *.pyc *.map
+include usage.py PRODUCT.md DESIGN.md .nvmrc
+recursive-include assets *.css
+recursive-include docs *.md
+recursive-include licenses *.txt

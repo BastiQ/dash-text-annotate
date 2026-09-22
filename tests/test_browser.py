@@ -4,7 +4,7 @@ import pytest
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-from browser_app import TEXT
+from .browser_app import TEXT
 
 pytestmark = pytest.mark.browser
 
@@ -14,7 +14,7 @@ def element(driver, selector):
 
 
 def entities(driver):
-    return json.loads(element(driver, '#output').text)
+    return json.loads(element(driver, '#output').text or '[]')
 
 
 def wait(driver, condition):
