@@ -10,5 +10,5 @@ prune .venv
 global-exclude *wps-hmr* output.js *.pyc *.map
 include usage.py PRODUCT.md DESIGN.md .nvmrc
 recursive-include assets *.css
-recursive-include docs *.md
+recursive-include docs *.md *.svg *.gif *.mp4
 recursive-include licenses *.txt
