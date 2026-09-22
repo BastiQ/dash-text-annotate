@@ -7,6 +7,7 @@ recursive-include tests *.py *.mjs
 prune node_modules
 prune venv
 prune .venv
+prune upload-media
 global-exclude *wps-hmr* output.js *.pyc *.map
 include usage.py PRODUCT.md DESIGN.md .nvmrc
 recursive-include assets *.css

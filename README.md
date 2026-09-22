@@ -20,9 +20,11 @@ A small **text span annotation component for Dash**. Select a passage, assign a 
 
 ## Demo
 
-[![Live demo: selecting and labeling a person and date, undoing and redoing an annotation, then saving.](docs/media/annotation-demo.gif)](docs/media/annotation-demo.mp4)
+<!-- Replace this comment with the GitHub-hosted MP4 URL on its own line.
+Local upload files: upload-media/annotation-demo.mp4 and annotation-demo.gif.
+The upload-media folder is intentionally ignored by Git and excluded from packages. -->
 
-[Watch the 25-second MP4](docs/media/annotation-demo.mp4) · Recorded from [the example app](usage.py): label a person and a date, undo, redo, and save.
+Try [the example app](usage.py): label a person and a date, undo, redo, and save. See the [quick start](#quick-start) to run it locally.
 
 ## Quick start
 
