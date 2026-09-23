@@ -48,7 +48,7 @@ Version 0.1.0 is a breaking beta following an older prototype. Existing users sh
 
 - [Source, demo instructions, and documentation](https://github.com/BastiQ/dash-text-annotate)
 - [PyPI](https://pypi.org/project/dash-text-annotate/)
-- [Component reference](https://github.com/BastiQ/dash-text-annotate/blob/master/docs/reference.md)
-- [Migration guide](https://github.com/BastiQ/dash-text-annotate/blob/master/docs/migration.md)
+- [Component reference](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/reference.md)
+- [Migration guide](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/migration.md)
 
 Feedback and small reproducible examples are welcome in the [issue tracker](https://github.com/BastiQ/dash-text-annotate/issues), especially experiences with different documents, keyboard workflows, and Dash themes.

@@ -43,7 +43,7 @@ Use Python 3.13 and the Node version in `.nvmrc` for release builds. The package
    For `0.1.0`, this produces `dash_text_annotate-0.1.0-py3-none-any.whl` and `dash_text_annotate-0.1.0.tar.gz`. The checks require matching versions in wheel/sdist metadata, npm metadata and lockfile, bundled assets, and the release tag. Demo recordings and build dependencies are excluded.
 
 4. Install the wheel in a fresh virtual environment outside the checkout, run `python -m pip check`, and run `python /absolute/path/to/repository/scripts/check_installed.py` from there. Also install the sdist in another clean environment to confirm that installation needs no frontend build.
-5. Commit the release changes and merge them into `master`. Require CI to pass, including the installed-wheel Chrome matrix on Python 3.10/Dash 3.0.0, Python 3.13/Dash 4.4.1, and Python 3.14/Dash 4.4.1. The publication workflow must exist on the default branch before manual dispatch is available.
+5. Commit the release changes and merge them into `main`. Require CI to pass, including the installed-wheel Chrome matrix on Python 3.10/Dash 3.0.0, Python 3.13/Dash 4.4.1, and Python 3.14/Dash 4.4.1. The publication workflow must exist on the default branch before manual dispatch is available.
 6. Tag the reviewed release commit `v0.1.0` and push that tag. Future releases use their matching version tags. Tag pushes run CI; they do not publish a package.
 
 ## Rehearse on TestPyPI
