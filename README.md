@@ -29,8 +29,6 @@ https://github.com/user-attachments/assets/a99760d6-a1f2-4a46-8322-43855f6adeec
 
 </details>
 
-[Open video](https://github.com/user-attachments/assets/a99760d6-a1f2-4a46-8322-43855f6adeec) · [Run the example](#quick-start)
-
 ## Quick start
 
 Requires **Python 3.10+** and **Dash 3 or 4**. JavaScript and CSS ship with the package; no Node.js or CDN is needed to use it.
