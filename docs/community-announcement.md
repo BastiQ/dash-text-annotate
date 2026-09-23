@@ -46,7 +46,7 @@ Each annotation has a stable ID, start/end offsets, the selected text, and a lab
 
 Python 3.10+ and Dash 3/4 are supported. The package includes its JavaScript and CSS; there is no Node.js installation or CDN requirement for users. It is MIT licensed and powered by Recogito Text Annotator.
 
-Version 0.1.0 is a beta release. The component handles annotation; storage, authentication, and multi-user collaboration belong to the surrounding app.
+Version 0.1.0 is a beta release.
 
 - [Source, demo instructions, and documentation](https://github.com/BastiQ/dash-text-annotate)
 - [PyPI](https://pypi.org/project/dash-text-annotate/)
