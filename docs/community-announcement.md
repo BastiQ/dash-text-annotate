@@ -10,6 +10,8 @@ I've released Dash Text Annotate, an open-source component for selecting and lab
 
 Use it to mark people, organizations, dates, or your own categories in documents. It supports overlapping labels, visible passage badges, keyboard passage search, relabeling, undo/redo, and read-only review. Your app controls storage and document loading.
 
+[Watch the 25-second demo video](https://github.com/user-attachments/assets/a99760d6-a1f2-4a46-8322-43855f6adeec): label a person and a date, undo, redo, and save.
+
 ```sh
 python -m pip install dash-text-annotate==0.1.0
 ```
