@@ -23,15 +23,13 @@ A small **text span annotation component for Dash**. Select a passage, assign a 
 https://github.com/user-attachments/assets/a99760d6-a1f2-4a46-8322-43855f6adeec
 
 <details>
-<summary>Animated preview</summary>
+<summary>GIF version (if the video doesn't play)</summary>
 
 <img width="960" height="840" alt="Live annotation demo: label a person and a date, undo, redo, and save." src="https://github.com/user-attachments/assets/f14fc433-6c0b-4327-8739-906d606f0694">
 
 </details>
 
-[Watch the 25-second video](https://github.com/user-attachments/assets/a99760d6-a1f2-4a46-8322-43855f6adeec).
-
-Try [the example app](https://github.com/BastiQ/dash-text-annotate/blob/main/usage.py): label a person and a date, undo, redo, and save. See the [quick start](#quick-start) to run it locally.
+[Open video](https://github.com/user-attachments/assets/a99760d6-a1f2-4a46-8322-43855f6adeec) · [Run the example](#quick-start)
 
 ## Quick start
 
