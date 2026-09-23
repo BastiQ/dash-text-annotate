@@ -275,3 +275,6 @@ GitHub.sublime-settings
 
 # Local copies of demo media hosted in GitHub attachments
 /upload-media/
+
+# Legacy webpack development artifacts
+/dash_text_annotate/*-wps-hmr.json
