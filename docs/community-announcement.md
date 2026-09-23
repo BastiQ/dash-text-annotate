@@ -1,6 +1,6 @@
 # Dash community announcement draft
 
-Maintainer notes: post only after `pip install dash-text-annotate==0.1.0` works from public PyPI and the documentation is merged. Category: **Dash Python**. Tags: **community-components**, **show-and-tell**. Attach the recording from `upload-media/annotation-demo.mp4` or `annotation-demo.gif`. Copy the text below into the forum topic; these notes are not part of the announcement.
+Maintainer notes: post only after `pip install dash-text-annotate==0.1.0` works from public PyPI and the documentation is merged. Category: **Dash Python**. Tags: **community-components**, **show-and-tell**. Use the [GitHub-hosted demo](../README.md#demo). Copy the text below into the forum topic; these notes are not part of the announcement.
 
 ---
 

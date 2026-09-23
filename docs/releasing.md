@@ -89,4 +89,4 @@ Run `scripts/check_installed.py` again and start the small README app. Check the
 
 Use the [announcement draft](community-announcement.md) after confirming the public install works. Create a topic in **Dash Python** with **`community-components`** and **`show-and-tell`** tags. This is the submission process described in the [Community Components Index](https://community.plotly.com/t/community-components-index/60098); inclusion is maintained by the forum team.
 
-Include the repository, PyPI link, a short runnable app, and the recorded demo. Upload the local `upload-media/annotation-demo.mp4` or GIF to GitHub/the forum and use the resulting public attachment URL. Recordings are deliberately outside the package. Forum posting and index inclusion are separate from publishing the Python package.
+Include the repository, PyPI link, a short runnable app, and the [GitHub-hosted demo](../README.md#demo). Recordings are deliberately outside the package. Forum posting and index inclusion are separate from publishing the Python package.
