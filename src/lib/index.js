@@ -1,6 +1,1 @@
-/* eslint-disable import/prefer-default-export */
-import DashTextAnnotate from './components/DashTextAnnotate.react';
-
-export {
-    DashTextAnnotate
-};
+export {default as DashTextAnnotate} from './components/DashTextAnnotate.react.js';

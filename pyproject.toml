@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dash-text-annotate"
+version = "0.1.0"
+description = "Accessible text span annotation for Dash, powered by Recogito"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+authors = [{name = "Sebastian Nichtern"}]
+dependencies = ["dash>=3.0,<5"]
+keywords = ["dash", "annotation", "text", "nlp", "named-entity-recognition", "recogito"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: Dash",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Operating System :: OS Independent",
+  "Topic :: Text Processing :: Linguistic",
+]
+
+[project.urls]
+Homepage = "https://github.com/BastiQ/dash-text-annotate"
+Documentation = "https://github.com/BastiQ/dash-text-annotate/blob/main/docs/reference.md"
+Source = "https://github.com/BastiQ/dash-text-annotate"
+Issues = "https://github.com/BastiQ/dash-text-annotate/issues"
+Changelog = "https://github.com/BastiQ/dash-text-annotate/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = ["dash[dev]==4.4.1", "build>=1.2,<2", "pytest>=8,<10", "twine>=6,<7", "selenium>=4.35,<5"]
+
+[tool.setuptools]
+packages = ["dash_text_annotate"]
+include-package-data = false
+
+[tool.setuptools.package-data]
+dash_text_annotate = ["*.min.js", "*.css", "metadata.json", "package-info.json", "py.typed", "THIRD_PARTY_NOTICES.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["browser: browser integration tests (requires Chrome and chromedriver)"]

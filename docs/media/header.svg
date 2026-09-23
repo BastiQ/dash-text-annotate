@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" role="img" aria-labelledby="title description">
+  <title id="title">Dash Text Annotate</title>
+  <desc id="description">Text annotation, inside Dash. An example labels Acme Labs as an organisation and Berlin as a place.</desc>
+  <rect width="960" height="220" rx="16" fill="#173e35"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+    <text x="40" y="43" fill="#9ac7b6" font-size="11" font-weight="600" letter-spacing="2.5">A SMALL COMPONENT FOR DASH</text>
+    <text x="40" y="99" fill="#f6f8f2" font-size="42" font-weight="650" letter-spacing="-1.5">Dash Text Annotate</text>
+    <text x="40" y="137" fill="#c4d9ce" font-size="19">Text annotation, inside Dash.</text>
+    <text x="40" y="186" fill="#9ac7b6" font-size="13">Select a passage. Add a label. Get Python-ready spans.</text>
+    <path d="M603 45v130" stroke="#36594e"/>
+    <rect x="641" y="59" width="129" height="35" rx="5" fill="#295e4e"/>
+    <text x="653" y="83" fill="#f0faf2" font-size="21">Acme Labs</text>
+    <rect x="780" y="65" width="48" height="23" rx="4" fill="#a9d5be"/>
+    <text x="804" y="81" text-anchor="middle" fill="#173e35" font-size="11" font-weight="700" letter-spacing=".5">ORG</text>
+    <text x="648" y="122" fill="#c4d9ce" font-size="18">opened an office in</text>
+    <rect x="641" y="138" width="79" height="35" rx="5" fill="#2d5260"/>
+    <text x="653" y="162" fill="#f0f7ff" font-size="21">Berlin</text>
+    <rect x="730" y="144" width="62" height="23" rx="4" fill="#b3cfe6"/>
+    <text x="761" y="160" text-anchor="middle" fill="#213d52" font-size="11" font-weight="700" letter-spacing=".5">PLACE</text>
+    <path d="M641 98h129" stroke="#9ac7b6" stroke-width="2"/>
+    <path d="M641 178h79" stroke="#b3cfe6" stroke-width="2"/>
+  </g>
+</svg>

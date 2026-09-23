@@ -1,96 +1,109 @@
-# Dash Text Annotate
+<p align="center">
+  <img src="https://raw.githubusercontent.com/BastiQ/dash-text-annotate/main/docs/media/header.svg" alt="Dash Text Annotate — text annotation, inside Dash." width="960">
+</p>
 
-Dash Text Annotate is a Dash component library.
+<p align="center">
+  <a href="https://github.com/BastiQ/dash-text-annotate/blob/main/pyproject.toml"><img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat" alt="Python 3.10+"></a>
+  <a href="https://github.com/BastiQ/dash-text-annotate/blob/main/pyproject.toml"><img src="https://img.shields.io/badge/Dash-3%20%7C%204-245B50?style=flat" alt="Dash 3 and 4"></a>
+  <a href="https://github.com/BastiQ/dash-text-annotate/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-64776D?style=flat" alt="MIT license"></a>
+</p>
 
-Get started with:
-1. Install Dash and its dependencies: https://dash.plotly.com/installation
-2. Run `python usage.py`
-3. Visit http://localhost:8050 in your web browser
+<p align="center">
+  <a href="#demo">Demo</a> · <a href="#quick-start">Quick start</a> · <a href="https://github.com/BastiQ/dash-text-annotate/blob/main/docs/reference.md">Component reference</a>
+</p>
 
-## Contributing
+A small **text span annotation component for Dash**. Select a passage, assign a label, and receive structured annotations in Python callbacks. Source text stays intact, and everything runs inside your Dash app.
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Annotate with the mouse or keyboard.
+- Use overlapping labels, passage badges, and undo/redo.
+- Load and save annotations through ordinary Dash callbacks.
 
-### Install dependencies
+## Demo
 
-If you have selected install_dependencies during the prompt, you can skip this part.
+https://github.com/user-attachments/assets/a99760d6-a1f2-4a46-8322-43855f6adeec
 
-1. Install npm packages
-    ```
-    $ npm install
-    ```
-2. Create a virtual env and activate.
-    ```
-    $ virtualenv venv
-    $ . venv/bin/activate
-    ```
-    _Note: venv\Scripts\activate for windows_
+<details>
+<summary>Animated preview</summary>
 
-3. Install python packages required to build components.
-    ```
-    $ pip install -r requirements.txt
-    ```
-4. Install the python packages for testing (optional)
-    ```
-    $ pip install -r tests/requirements.txt
-    ```
+<img width="960" height="840" alt="Live annotation demo: label a person and a date, undo, redo, and save." src="https://github.com/user-attachments/assets/f14fc433-6c0b-4327-8739-906d606f0694">
 
-### Write your component code in `src/lib/components/DashTextAnnotate.react.js`.
+</details>
 
-- The demo app is in `src/demo` and you will import your example component code into your demo app.
-- Test your code in a Python environment:
-    1. Build your code
-        ```
-        $ npm run build
-        ```
-    2. Run and modify the `usage.py` sample dash app:
-        ```
-        $ python usage.py
-        ```
-- Write tests for your component.
-    - A sample test is available in `tests/test_usage.py`, it will load `usage.py` and you can then automate interactions with selenium.
-    - Run the tests with `$ pytest tests`.
-    - The Dash team uses these types of integration tests extensively. Browse the Dash component code on GitHub for more examples of testing (e.g. https://github.com/plotly/dash-core-components)
-- Add custom styles to your component by putting your custom CSS files into your distribution folder (`dash_text_annotate`).
-    - Make sure that they are referenced in `MANIFEST.in` so that they get properly included when you're ready to publish your component.
-    - Make sure the stylesheets are added to the `_css_dist` dict in `dash_text_annotate/__init__.py` so dash will serve them automatically when the component suite is requested.
-- [Review your code](./review_checklist.md)
+[Watch the 25-second video](https://github.com/user-attachments/assets/a99760d6-a1f2-4a46-8322-43855f6adeec).
 
-### Create a production build and publish:
+Try [the example app](https://github.com/BastiQ/dash-text-annotate/blob/main/usage.py): label a person and a date, undo, redo, and save. See the [quick start](#quick-start) to run it locally.
 
-1. Build your code:
-    ```
-    $ npm run build
-    ```
-2. Create a Python distribution
-    ```
-    $ python setup.py sdist bdist_wheel
-    ```
-    This will create source and wheel distribution in the generated the `dist/` folder.
-    See [PyPA](https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project)
-    for more information.
+## Quick start
 
-3. Test your tarball by copying it into a new environment and installing it locally:
-    ```
-    $ pip install dash_text_annotate-0.0.1.tar.gz
-    ```
+Requires **Python 3.10+** and **Dash 3 or 4**. JavaScript and CSS ship with the package; no Node.js or CDN is needed to use it.
 
-4. If it works, then you can publish the component to NPM and PyPI:
-    1. Publish on PyPI
-        ```
-        $ twine upload dist/*
-        ```
-    2. Cleanup the dist folder (optional)
-        ```
-        $ rm -rf dist
-        ```
-    3. Publish on NPM (Optional if chosen False in `publish_on_npm`)
-        ```
-        $ npm publish
-        ```
-        _Publishing your component to NPM will make the JavaScript bundles available on the unpkg CDN. By default, Dash serves the component library's CSS and JS locally, but if you choose to publish the package to NPM you can set `serve_locally` to `False` and you may see faster load times._
+Install the published package:
 
-5. Share your component with the community! https://community.plotly.com/c/dash
-    1. Publish this repository to GitHub
-    2. Tag your GitHub repository with the plotly-dash tag so that it appears here: https://github.com/topics/plotly-dash
-    3. Create a post in the Dash community forum: https://community.plotly.com/c/dash
+```sh
+python -m pip install dash-text-annotate==0.1.0
+```
+
+If `0.1.0` is not yet listed on [PyPI](https://pypi.org/project/dash-text-annotate/), use the checkout installation below. The distribution name is `dash-text-annotate`; the Python import is `dash_text_annotate`.
+
+> **0.1.0 is a breaking beta release.** Upgrading from the historical 0.0.1 prototype? Read the [migration guide](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/migration.md).
+
+To install from a [repository checkout](https://github.com/BastiQ/dash-text-annotate) and run the full demo:
+
+```sh
+# From this repository checkout:
+python -m pip install .
+python usage.py
+```
+
+Open <http://127.0.0.1:8050>. The demo includes session saving, JSON import/export, and read-only review. Save before switching documents; your own app can use a database or files instead of browser-session storage.
+
+## A small app
+
+```python
+import json
+from dash import Dash, Input, Output, html
+from dash_text_annotate import DashTextAnnotate
+
+app = Dash(__name__)
+app.layout = html.Main([
+    DashTextAnnotate(
+        id="annotator",
+        text="😀 Acme opened an office in Berlin.",
+        tag="ORG",
+        tag_colors={"ORG": "#79b9a5"},
+        show_labels=True,  # Set False for highlights without passage badges.
+        label_position="right",  # Also supports "left", "top", and "bottom".
+        entities=[],
+    ),
+    html.Pre(id="annotations"),
+])
+
+@app.callback(Output("annotations", "children"), Input("annotator", "entities"))
+def show_annotations(entities):
+    return json.dumps(entities or [], ensure_ascii=False, indent=2)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+Selecting `Acme` produces a record like this:
+
+```json
+{"id": "a-stable-uuid", "start": 2, "end": 6, "text": "Acme", "tag": "ORG", "color": "#79b9a5"}
+```
+
+`text[start:end]` in Python is exactly the selected passage. Offsets are **zero-based Unicode code points; end is exclusive**. Combining marks count separately. Use `offset_unit="utf16"` for legacy JavaScript offsets, or migrate them with `convert_offsets`.
+
+## Documentation
+
+- [Component reference](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/reference.md) — editing, keyboard controls, annotation data, and all properties.
+- [Migration guide](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/migration.md) and [changelog](https://github.com/BastiQ/dash-text-annotate/blob/main/CHANGELOG.md) — upgrading from 0.0.1.
+- [Contributing](https://github.com/BastiQ/dash-text-annotate/blob/main/CONTRIBUTING.md) — local development and tests.
+- [Release guide](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/releasing.md) — building, publishing to PyPI, and listing in the Dash community.
+- [Scope and alternatives](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/ecosystem.md) — where this component fits.
+
+The component handles plain-text annotation. Document storage, authentication, and collaboration belong to your app. Modern desktop browsers are the target; see the [validation record](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/validation.md) for checks and limitations. [Report bugs](https://github.com/BastiQ/dash-text-annotate/issues) with a minimal Dash app, version details, and synthetic sample text.
+
+## License
+
+[MIT](https://github.com/BastiQ/dash-text-annotate/blob/main/LICENSE). Powered by [Recogito Text Annotator](https://github.com/recogito/text-annotator-js), using Dash's own React instance. Bundled libraries and their licenses are listed in [third-party notices](https://github.com/BastiQ/dash-text-annotate/blob/main/THIRD_PARTY_NOTICES.md). Thanks to the original `react-text-annotate` project and the Dash component tooling.

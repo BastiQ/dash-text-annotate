@@ -1,0 +1,25 @@
+name: Bug report
+description: Report a reproducible annotation or packaging problem.
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Describe the action you took and the result.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Minimal Dash app
+      description: Include synthetic text and annotations that reproduce the issue. Remove private data.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions
+      description: Python, Dash, dash-text-annotate, browser, operating system, and offset_unit.
+    validations:
+      required: true

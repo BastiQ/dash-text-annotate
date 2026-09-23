@@ -1,0 +1,30 @@
+:root { color-scheme: light; }
+body { margin: 0; background: #f8f8f3; color: #253832; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; }
+.demo { max-width: 960px; margin: 0 auto; padding: 56px 28px 32px; }
+.demo header { padding-bottom: 24px; border-bottom: 1px solid #ccd4cd; }
+.demo .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; color: #42645a; margin: 0 0 12px; }
+.demo h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -.025em; line-height: 1.15; font-weight: 650; margin: 0 0 16px; }
+.demo .intro { max-width: 640px; color: #4b6258; font-size: 17px; margin: 0; }
+.demo-controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 24px; align-items: end; margin: 26px 0 14px; }
+.demo-controls label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
+.demo-options label { display: flex; align-items: center; gap: .4rem; font-weight: 400; white-space: nowrap; }
+.demo-position { display: flex; align-items: center; gap: 12px; font-size: 14px; margin: 16px 0; }
+.demo-position #label-position { width: 150px; }
+.demo .hint { color: #4b6258; font-size: 14px; }
+.demo .dta-document { background: #fffffa; padding: 24px; font-size: 18px; margin-top: 16px; }
+.demo .save-controls { display: flex; flex-wrap: wrap; gap: 10px; border-top: 1px solid #ccd4cd; padding-top: 22px; margin-top: 22px; }
+.demo .save-controls button { font: inherit; border: 1px solid #acbfb5; color: inherit; background: transparent; padding: 9px 15px; border-radius: 4px; cursor: pointer; }
+.demo .save-controls .primary { color: #f8faf5; background: #245b50; border-color: #245b50; font-weight: 600; }
+.demo .save-controls button:hover { filter: brightness(.94); }
+.demo :focus-visible { outline: 3px solid #245b50; outline-offset: 3px; }
+.demo #save-status, .demo #load-status { font-size: 14px; }
+.demo .json-preview { margin: 28px 0; }
+.demo summary { cursor: pointer; font-weight: 600; }
+.demo pre { padding: 18px; background: #eef1ea; border-radius: 4px; overflow: auto; font-size: 13px; }
+.demo footer { border-top: 1px solid #ccd4cd; padding-top: 22px; font-size: 13px; color: #4b6258; }
+.demo a { color: #245b50; text-underline-offset: 3px; }
+@media (max-width: 650px) {
+  .demo { padding: 28px 16px; }
+  .demo-controls { grid-template-columns: 1fr; gap: 14px; }
+  .demo .dta-document { padding: 16px; font-size: 16px; }
+}

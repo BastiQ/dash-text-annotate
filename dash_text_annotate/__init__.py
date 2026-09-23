@@ -1,53 +1,14 @@
-from __future__ import print_function as _
-
-import os as _os
-import sys as _sys
+"""Text span annotation for Dash, with local JavaScript and CSS assets."""
 import json
+from pathlib import Path
 
-import dash as _dash
+from .DashTextAnnotate import DashTextAnnotate
+from .validation import convert_offsets, validate_entities
 
-# noinspection PyUnresolvedReferences
-from ._imports_ import *
-from ._imports_ import __all__
+__all__ = ["DashTextAnnotate", "convert_offsets", "validate_entities"]
+__version__ = json.loads(Path(__file__).with_name("package-info.json").read_text())["version"]
 
-if not hasattr(_dash, '__plotly_dash') and not hasattr(_dash, 'development'):
-    print('Dash was not successfully imported. '
-          'Make sure you don\'t have a file '
-          'named \n"dash.py" in your current directory.', file=_sys.stderr)
-    _sys.exit(1)
-
-_basepath = _os.path.dirname(__file__)
-_filepath = _os.path.abspath(_os.path.join(_basepath, 'package-info.json'))
-with open(_filepath) as f:
-    package = json.load(f)
-
-package_name = package['name'].replace(' ', '_').replace('-', '_')
-__version__ = package['version']
-
-_current_path = _os.path.dirname(_os.path.abspath(__file__))
-
-_this_module = _sys.modules[__name__]
-
-
-_js_dist = [
-    {
-        'relative_package_path': 'dash_text_annotate.min.js',
-'external_url': 'https://unpkg.com/{0}@{2}/{1}/{1}.min.js'.format(
-            package_name, __name__, __version__),
-        'namespace': package_name
-    },
-    {
-        'relative_package_path': 'dash_text_annotate.min.js.map',
-'external_url': 'https://unpkg.com/{0}@{2}/{1}/{1}.min.js.map'.format(
-            package_name, __name__, __version__),
-        'namespace': package_name,
-        'dynamic': True
-    }
-]
-
-_css_dist = []
-
-
-for _component in __all__:
-    setattr(locals()[_component], '_js_dist', _js_dist)
-    setattr(locals()[_component], '_css_dist', _css_dist)
+_js_dist = [{"relative_package_path": "dash_text_annotate.min.js", "namespace": "dash_text_annotate"}]
+_css_dist = [{"relative_package_path": "dash_text_annotate.min.css", "namespace": "dash_text_annotate"}]
+DashTextAnnotate._js_dist = _js_dist
+DashTextAnnotate._css_dist = _css_dist
