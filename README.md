@@ -43,7 +43,7 @@ If `0.1.0` is not yet listed on [PyPI](https://pypi.org/project/dash-text-annota
 
 > **0.1.0 is a breaking beta release.** Upgrading from the historical 0.0.1 prototype? Read the [migration guide](https://github.com/BastiQ/dash-text-annotate/blob/main/docs/migration.md).
 
-To install from a [repository checkout](https://github.com/BastiQ/dash-text-annotate) and run the full demo:
+To install from a [repository checkout](https://github.com/BastiQ/dash-text-annotate) and run the [full demo](usage.py):
 
 ```sh
 # From this repository checkout:
