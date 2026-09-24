@@ -30,7 +30,7 @@ Issues = "https://github.com/BastiQ/dash-text-annotate/issues"
 Changelog = "https://github.com/BastiQ/dash-text-annotate/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
-dev = ["dash[dev]==4.4.1", "build>=1.2,<2", "pytest>=8,<10", "twine>=6,<7", "selenium>=4.35,<5"]
+dev = ["dash[dev]==4.4.1", "build>=1.2,<2", "pytest>=8,<10", "twine>=6,<8", "selenium>=4.35,<5"]
 
 [tool.setuptools]
 packages = ["dash_text_annotate"]
