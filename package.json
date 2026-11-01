@@ -19,14 +19,14 @@
     "node": ">=22.18.0"
   },
   "dependencies": {
-    "@recogito/text-annotator": "4.3.4",
-    "uuid": "14.0.2"
+    "@recogito/text-annotator": "4.3.7",
+    "uuid": "14.0.3"
   },
   "devDependencies": {
     "esbuild": "0.28.2",
     "prop-types": "15.8.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "react-docgen": "8.0.4"
   }
 }
